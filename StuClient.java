@@ -35,9 +35,11 @@ class  StuClient extends Thread {
 			os = s.getOutputStream();
 			dis = new DataInputStream(is);
 			dos = new DataOutputStream(os);
-			
-			start();
+
 			name();
+			start();
+			msg();
+
 		}catch(UnknownHostException uhe){ 
 			pln("해당 서버가 존재하지 않습니다.");
 			connect();
@@ -56,8 +58,6 @@ class  StuClient extends Thread {
 			if(id.length() ==0) id="User";
 			dos.writeUTF(id);
 			dos.flush();
-			msg();
-
 		}catch(IOException ie){}
 	}
 	void choice(){ //패 선택
@@ -67,6 +67,10 @@ class  StuClient extends Thread {
 	}
 	public void run(){
 		try{
+			//아이디확정
+			id = dis.readUTF();
+			pln("< 당신의 아이디는 [ "+id+" ]입니다. > ");
+
 			while(true){
 				String msg = dis.readUTF();
 				pln(msg);

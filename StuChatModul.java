@@ -34,12 +34,28 @@ class StuCM extends Thread{
 	void listen(){ 
 		String msg = "";
 		try{
+			//사용자의 아이디값 입력받기
 			id = dis.readUTF();
-			if(id.equals("User")){
-				sts.userCount ++;  //user 증가
-				String uc = String.valueOf(sts.userCount); //count값 문자로 변환
-				id = id+uc;
+
+			//아이디 중복확인
+			while(true){
+				int userCount = 0;
+				String ods = "I"; //옹달샘
+
+				//사용자 리스트 비교
+				for(StuCM client : sts.cv){
+					if(id.equals(client.id)) userCount++;
+				}
+
+				if(userCount<2){	//중복없을 때
+					id = id;
+					break;
+				}else{				//중복일 때
+					id = id + ods;
+				}
 			}
+			isYourId(id);
+
 			broadcast(id+"님이 입장하셨습니다. ( 총 인원 " +sts.cv.size()+"명 )");
 			sts.pln(id+"님이 입장하셨습니다. ( 총 인원 " +sts.cv.size()+"명 )");
 
@@ -96,6 +112,18 @@ class StuCM extends Thread{
 			if(cs != null) cs.close();
 		}catch(IOException ie){}
 	}
+
+	void isYourId(String id){
+		try{
+			for(StuCM modul : sts.cv){
+				if(modul.id.equals(id)){
+					modul.dos.writeUTF(id);
+					modul.dos.flush();
+				}
+			}
+		}catch(IOException ie){}
+	}
+
 	void broadcast(String msg){
 		try{
 			for(StuCM modul : sts.cv){
@@ -104,4 +132,5 @@ class StuCM extends Thread{
 			}
 		}catch(IOException ie){}
 	}
+
 }

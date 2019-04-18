@@ -19,7 +19,6 @@ class StuServer extends Thread{
 	StuCM cm;
 
 	//클라이언트 정보 리스트
-	int userCount = 0;
 	int readyCount;
 	Vector<StuCM> cv = new Vector<StuCM>();
 
