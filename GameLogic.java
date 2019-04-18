@@ -65,13 +65,17 @@ class GameLogic extends Thread{
 	          card1[i] = Integer.parseInt(hm.get(i)); // 첫패	         
 	          cardMsg = hm.get(i);
 	          scm.broadcast("유저"+i+"의 첫 패"+cardMsg);
-	          card2[i] = Integer.parseInt(hm.get(userCnt + i)); // 두번째 패
-	          cardMsg = hm.get(userCnt + i);
-	          scm.broadcast("유저"+i+"의 두번째 패"+cardMsg);
-	         p(card1[i] + " | " + card2[i] + ">>");
-	         powers[i] = cardTree(card1[i], card2[i]); // 파워 포인트 return
-	         if (win < powers[i])
-	            win = powers[i];// 가장 큰 수 저장
+	      }
+	      for(int j=0;j<userCnt;j++) {
+	          card2[j] = Integer.parseInt(hm.get(userCnt + j)); // 두번째 패
+	          cardMsg = hm.get(userCnt + j);
+	          scm.broadcast("유저"+j+"의 두번째 패"+cardMsg);
+	      }
+	      for(int k=0;k<userCnt;k++) {
+	         p(card1[k] + " | " + card2[k] + ">>");
+	         powers[k] = cardTree(card1[k], card2[k]); // 파워 포인트 return
+	         if (win < powers[k])
+	            win = powers[k];// 가장 큰 수 저장
 	      }
 	      if (win == 26 || win == 16) {
 	         reGame();

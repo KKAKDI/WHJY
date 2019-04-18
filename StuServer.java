@@ -119,7 +119,8 @@ class StuServer extends Thread{
 				//acceptClient();
 				cm.broadcast("게임을 시작합니다");
 				pln("게임을 시작합니다.");
-				start();
+				gl.start();
+				
 			}else{
 				cm.broadcast("참가 플레이어 모두가 레디를 해야 게임이 시작됩니다.");
 				pln("참가 플레이어 모두가 레디를 해야 게임이 시작됩니다.");
@@ -129,7 +130,7 @@ class StuServer extends Thread{
 
 	//오버라이딩
 	public void run(){
-		gl.start();
+	
 	}
 
 	void pln(String str){
