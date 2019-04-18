@@ -10,8 +10,8 @@ class StuServer extends Thread{
 	Socket gs;	//게임소켓
 	Socket cs;		//모듈소켓
 	int port;
-	boolean gm = true;	
-	boolean a = true;
+	boolean gm = true;		//게임중(game middle)인지 아닌지 확인하는 조건
+	boolean acc = true;		//서버입장(accpetClient) 반복문 조건
 
 	//스탠드업 모듈
 	StuCM cm;
@@ -70,10 +70,10 @@ class StuServer extends Thread{
 	void acceptClient(){
 		try{
 			//최대 클라이언트 수 4명
-			if(cv.size()<=3 && gm) a = true;
-			if(!gm) a = false;
+			if(cv.size()<=3 && gm) acc = true;
+			if(!gm) acc = false;
 			pln("gm : "+gm);
-			while(a){
+			while(acc){
 				pln("cv size : "+cv.size());
 				cs = ss.accept();
 				gs = cs;
@@ -86,11 +86,11 @@ class StuServer extends Thread{
 				//해당모듈정보 벡터리스트에 저장하기
 				cv.add(cm);
 
-				//채팅받기
+				//모듈시작
 				cm.start();
 
 				//인원제한
-				if(cv.size()>=4) a = false;
+				if(cv.size()>=4) acc = false;
 			}
 		}catch(IOException io){
 			pln("IO익셉션[acceptClient()]이 발생하였습니다" + io);
