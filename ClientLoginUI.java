@@ -1,4 +1,3 @@
-package ljh.javap.TPJT1;
 
 import java.awt.*;
 import java.awt.event.*;
