@@ -84,7 +84,7 @@ class StuServer extends Thread{
 				
 				//클라이언트 정보 모듈로 보내기
 				cm = new StuCM(this);			
-				gl = new GameLogic(this);
+				
 				//해당모듈정보 벡터리스트에 저장하기
 				cv.add(cm);
 
@@ -117,8 +117,9 @@ class StuServer extends Thread{
 			if(readyCount==cv.size() & readyCount>=2){
 				gm = false;
 				//acceptClient();
-				cm.broadcast("게임을 시작합니다");
+				cm.broadcast("게임을 시작합니다");				
 				pln("게임을 시작합니다.");
+				gl = new GameLogic(this);
 				gl.start();
 				
 			}else{
