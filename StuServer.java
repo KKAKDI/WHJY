@@ -9,7 +9,7 @@ class StuServer extends Thread{
 	ServerSocket ss;
 	Socket gs;	//게임소켓
 	Socket cs;		//모듈소켓
-	int port;
+	int port = 3524;
 	boolean gm = true;	//게임중(game middle)인지 아닌지 확인하는 조건
 	boolean acc = true;	//서버입장(accpetClient) 반복문 조건
 	GameLogic gl;
@@ -32,41 +32,43 @@ class StuServer extends Thread{
 
 	void init(){
 		//포트선택
-		p("실행할 서비스 포트 번호(기본3524) : ");
-		String line = "";
-
-		try{
-			line = br.readLine();
-			line = line.trim();
-		}catch(IOException io){
-			pln("IO익셉션이 발생하였습니다. 시스템을 종료합니다");
-			System.exit(0);
-		}
-		
-		if(line.equals("")){
-			port = 3524;
-		}else{
-			try{
-				int i = Integer.parseInt(line);
-				if(i<1024 || i>65535){
-					pln("\n 1025~66535번사이의 포트를 입력해주세요 \n");
-					init();
-				}else{
-					port = i;
-				}
-			}catch(NumberFormatException nfe){
-				pln("\n 숫자를 입력해주세요 \n");
-				init();
-			}
-		}
+//		p("실행할 서비스 포트 번호(기본3524) : ");
+//		String line = "";
+//
+//		try{
+//			line = br.readLine();
+//			line = line.trim();
+//		}catch(IOException io){
+//			pln("IO익셉션이 발생하였습니다. 시스템을 종료합니다");
+//			System.exit(0);
+//		}
+//		
+//		if(line.equals("")){
+//			port = 3524;
+//		}else{
+//			try{
+//				int i = Integer.parseInt(line);
+//				if(i<1024 || i>65535){
+//					pln("\n 1025~66535번사이의 포트를 입력해주세요 \n");
+//					init();
+//				}else{
+//					port = i;
+//				}
+//			}catch(NumberFormatException nfe){
+//				pln("\n 숫자를 입력해주세요 \n");
+//				init();
+//			}
+//		}
 
 		try{
 			//서버오픈	
 			ss = new ServerSocket(port);
 			pln(port+"번포트에서 서버가 대기중...");
-		}catch(IOException io){}
-
-		acceptClient();
+		}catch(IOException io){
+			pln("IO익셉션이 발생하였습니다. 시스템을 종료합니다");
+			System.exit(0);
+		}			
+			acceptClient();
 	}
 
 	void acceptClient(){

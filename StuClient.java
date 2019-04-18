@@ -11,6 +11,7 @@ class  StuClient extends Thread {
 	DataOutputStream dos;
 	String id;
 	boolean rop = false;
+	int port = 3524;
 
 	StuClient(){
 		connect();
@@ -22,11 +23,11 @@ class  StuClient extends Thread {
 			if(ip != null) ip=ip.trim();
 			if(ip.length() == 0) ip="127.0.0.1"; //채연 ip 203.236.209.207
 
-			p("포트 : "); //(기본 port : 3524) 
-			String portP = br.readLine();
-			if(portP != null) portP=portP.trim();
-			if(portP.length() == 0) portP="3524";
-			int port = Integer.parseInt(portP);
+//			p("포트 : "); //(기본 port : 3524) 
+//			String portP = br.readLine();
+//			if(portP != null) portP=portP.trim();
+//			if(portP.length() == 0) portP="3524";
+//			port = Integer.parseInt(portP);
 
 			s = new Socket(ip,port);
 			pln("서버와 연결되었습니다."); //연결button
