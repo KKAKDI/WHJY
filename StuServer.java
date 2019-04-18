@@ -27,7 +27,7 @@ class StuServer extends Thread{
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	
 	StuServer(){
-		init();
+		//init();
 	}
 
 	void init(){
@@ -120,8 +120,8 @@ class StuServer extends Thread{
 				gm = false;
 				//acceptClient();
 				cm.broadcast("게임을 시작합니다");				
-				pln("게임을 시작합니다.");
-				gl = new GameLogic(this);
+				pln("게임을 시작합니다.");				
+				gl = new GameLogic(this,cv.size());
 				gl.start();
 				
 			}else{
@@ -145,6 +145,6 @@ class StuServer extends Thread{
 	}
 
 	public static void main(String[] args){
-		new StuServer();
+		new StuServer().init();
 	}
 }
