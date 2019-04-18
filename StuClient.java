@@ -10,8 +10,6 @@ class  StuClient extends Thread {
 	OutputStream os;
 	DataOutputStream dos;
 	String id;
-	String gidrmtgksaksmfqkrpxmtpqmsdlffpqms;		//«‚±ﬂ«—∏∂¥√πŸ∞‘∆Æºº∫Ï¿œ∑π∫Ï
-	String tpqmsdlffpqmsgidrmtgksaksmfqkrpxm;		// ºº∫Ï¿œ∑π∫Ï«‚±ﬂ«—∏∂¥√πŸ∞‘∆Æ
 	boolean rop = false;
 
 	StuClient(){
@@ -61,7 +59,7 @@ class  StuClient extends Thread {
 
 		}catch(IOException ie){}
 	}
-	void choice(){
+	void choice(){ //∆– º±≈√
 		int i = 1;
 		int j = 2;
 		String str = (i!=j)? "∆–1" : "∆–2";

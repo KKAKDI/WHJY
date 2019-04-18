@@ -1,11 +1,9 @@
 import java.io.*;
 import java.net.*;
 
-//스탠드업 채팅 및 레디모듈  //서버의 로그 및 채팅 브로드캐스팅 및 레디입력 받기
 class StuCM extends Thread{
 	StuServer sts;
 	Socket cs;
-
 	InputStream is;
 	OutputStream os;
 	DataInputStream dis;
@@ -29,15 +27,14 @@ class StuCM extends Thread{
 
 	public void run(){
 		listen();
-		//readygo();
 	}
-	void listen(){
+	void listen(){ //입장 및 퇴장
 		String msg = "";
 		try{
 			id = dis.readUTF();
 			if(id.equals("User")){
-				sts.userCount ++;
-				String uc = String.valueOf(sts.userCount);
+				sts.userCount ++;  //user 증가
+				String uc = String.valueOf(sts.userCount); //count값 문자로 변환
 				id = id+uc;
 			}
 			broadcast(id+"님이 입장하셨습니다. ( 총 인원 " +sts.cv.size()+"명 )");
@@ -61,7 +58,7 @@ class StuCM extends Thread{
 		}
 	}
 
-	void readygo(String msg){
+	void readygo(String msg){ //준비상태
 			if(msg.equals("gidaktp")){
 				ready = true;
 				sts.ready4Client();
@@ -75,7 +72,7 @@ class StuCM extends Thread{
 					sts.readyCount--;
 					broadcast(id+"님이 대기 상태입니다. ( 준비 인원 " +sts.readyCount+"/"+sts.cv.size()+"명 )");
 					sts.pln(id+"님이 대기 상태입니다. ( 준비 인원 " +sts.readyCount+"/"+sts.cv.size()+"명 )");
-					sts.ready4Client();
+					sts.ready4Client(); 
 				}
 			}else{
 				broadcast(id+" : "+msg);
