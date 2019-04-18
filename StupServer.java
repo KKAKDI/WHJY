@@ -12,6 +12,7 @@ class StuServer extends Thread{
 	int port;
 	boolean gm = true;	
 	boolean a = true;
+	GameLogic gl;
 
 	//스탠드업 모듈
 	StuCM cm;
@@ -81,16 +82,16 @@ class StuServer extends Thread{
 				pln("클라이언트("+cs.getInetAddress().getHostName()+")와 접속되었다");
 				
 				//클라이언트 정보 모듈로 보내기
-				cm = new StuCM(this);
-
+				cm = new StuCM(this);			
+				gl = new GameLogic(this);
 				//해당모듈정보 벡터리스트에 저장하기
 				cv.add(cm);
 
 				//채팅받기
 				cm.start();
-
 				//인원제한
 				if(cv.size()>=4) a = false;
+				
 			}
 		}catch(IOException io){
 			pln("IO익셉션[acceptClient()]이 발생하였습니다" + io);
@@ -99,7 +100,7 @@ class StuServer extends Thread{
 
 	//클라이언트의 레디 받기 (2명~4명)
 	void ready4Client(){
-		boolean readyValue = false;
+		
 		readyCount = 0;
 
 		for(StuCM re : cv){
@@ -115,6 +116,7 @@ class StuServer extends Thread{
 				//acceptClient();
 				cm.broadcast("게임을 시작합니다");
 				pln("게임을 시작합니다.");
+				start();
 			}else{
 				cm.broadcast("참가 플레이어 모두가 레디를 해야 게임이 시작됩니다.");
 				pln("참가 플레이어 모두가 레디를 해야 게임이 시작됩니다.");
@@ -124,7 +126,7 @@ class StuServer extends Thread{
 
 	//오버라이딩
 	public void run(){
-
+		gl.start();
 	}
 
 	void pln(String str){

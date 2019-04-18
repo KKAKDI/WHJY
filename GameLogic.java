@@ -11,8 +11,16 @@ class GameLogic extends Thread{
 	HashMap<Integer, String> hm;
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	int[] powers, card1, card2;
+	String cardMsg;
+	StuServer sts;	
+	StuCM scm;
 
-	GameLogic() {		
+	GameLogic(StuServer sts) {	
+		this.sts = sts;
+		scm = new StuCM(sts);		
+	}
+	
+	public void run() {
 		cntUser();
 	}
 
@@ -52,10 +60,14 @@ class GameLogic extends Thread{
 	void play() {//패돌리기 메소드      
 	      card1 = new int[userCnt];
 	      card2 =new int[userCnt];
+	      
 	      for (int i=0; i < userCnt; i++) { // 유저 수 패 2장 순차 돌림
-	          card1[i] = Integer.parseInt(hm.get(i)); // 첫패
-	         
+	          card1[i] = Integer.parseInt(hm.get(i)); // 첫패	         
+	          cardMsg = hm.get(i);
+	          scm.broadcast("유저"+i+"의 첫 패"+cardMsg);
 	          card2[i] = Integer.parseInt(hm.get(userCnt + i)); // 두번째 패
+	          cardMsg = hm.get(userCnt + i);
+	          scm.broadcast("유저"+i+"의 두번째 패"+cardMsg);
 	         p(card1[i] + " | " + card2[i] + ">>");
 	         powers[i] = cardTree(card1[i], card2[i]); // 파워 포인트 return
 	         if (win < powers[i])
@@ -83,8 +95,6 @@ class GameLogic extends Thread{
 		}
 		return msg;
 	}
-	
-
 	void reGame() { // 다시 한판
 		pln("묻고 더블로 가!");
 		win = 0;
@@ -93,6 +103,14 @@ class GameLogic extends Thread{
 		}		
 		roll(userCnt);
 	}
+//	void broadcast(String msg){
+//		try{
+//			for(StuCM modul : sts.cv){
+//				modul.dos.writeUTF(msg);
+//				modul.dos.flush();
+//			}
+//		}catch(IOException ie){}
+//	}
 
 	int cardTree(int card1, int card2) { //족보
 		int cardSub = card1 - card2;
@@ -233,9 +251,4 @@ class GameLogic extends Thread{
 	void pln(String str) {
 		System.out.println(str);
 	}
-
-	public static void main(String[] args) {
-//		new GameLogic();
-	}
-
 }

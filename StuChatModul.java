@@ -16,7 +16,8 @@ class StuCM extends Thread{
 	boolean ready = false; //f노레디, t레디
 	int cash = 1000;
 	String statement;
-
+	
+	
 	StuCM(StuServer sts){
 		this.sts = sts;
 		try{
