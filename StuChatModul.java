@@ -132,5 +132,24 @@ class StuCM extends Thread{
 			}
 		}catch(IOException ie){}
 	}
+	
+	//게임로직 실행 전에 게임참가 멤버 순서 및 정보 전달
+	void isYourGmMem(){
+		try{
+			for(StuCM modul : sts.cv){
+				String token = "@a_r_b_o_k";
+				String t = "/";
+				String size = Integer.toString(sts.cv.size());
+				token = token + t + size;
 
+				for(StuCM gmem : sts.cv){
+					token = token + t + gmem.id;
+				}
+				modul.dos.writeUTF(token);
+				modul.dos.flush();
+			}
+		}catch(IOException io){
+			sts.pln("isYourGmMem Exception");
+		}
+	}
 }

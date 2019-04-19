@@ -47,6 +47,7 @@ class StuServer extends Thread {
 			// 최대 클라이언트 수 4명
 			if (cv.size() <= 3 && gm)
 				acc = true;
+
 			if (!gm)
 				acc = false;
 			pln("gm : " + gm);
@@ -65,8 +66,8 @@ class StuServer extends Thread {
 
 				// 모듈시작
 				cm.start();
-				// 인원제한
 
+				// 인원제한
 				if (cv.size() >= 4)
 					acc = false;
 
@@ -95,12 +96,16 @@ class StuServer extends Thread {
 		} else if (cv.size() >= 2 & cv.size() < 5) {
 			if (readyCount == cv.size() & readyCount >= 2) {
 				gm = false;
-				// acceptClient();
 				cm.broadcast("게임을 시작합니다");
 				pln("게임을 시작합니다.");
+
+				//게임시작 전에 클라이언트에게 순서 및 참여정보 전달
+				cm.isYourGmMem();	
+
+				//게임로직 시작
 				gl = new GameLogic(this, cv.size());
 				gl.start();
-
+				readyCount = 0;
 			} else {
 				cm.broadcast("참가 플레이어 모두가 레디를 해야 게임이 시작됩니다.");
 				pln("참가 플레이어 모두가 레디를 해야 게임이 시작됩니다.");
