@@ -1,5 +1,6 @@
 import java.net.*;
 import java.io.*;
+import java.util.*;
 
 class StuClient extends Thread {
 	String ip;
@@ -14,6 +15,7 @@ class StuClient extends Thread {
 	int port = 3524;
 	ClientLoginUI clui = new ClientLoginUI();
 	Thread t1, t2;
+	Vector<String> scs = new Vector<String>();
 
 	StuClient(ClientLoginUI clui) {
 		this.clui = clui;
@@ -66,26 +68,34 @@ class StuClient extends Thread {
 		}
 
 	}
-
 	void choice() { // 패 선택
 		int i = 1;
 		int j = 2;
 		String str = (i != j) ? "패1" : "패2";
 	}
+	void procedure(String msg){//클라이언트 순서	
+		String items[] = msg.split("/");
+		int a = Integer.parseInt(items[1]);
 
-	public void run() { // 채팅 읽어오기
-
-		try {
-			// 아이디확정
+		for(int i=2; i<(a+2); i++){
+			scs.add(items[i]);
+		}
+	}
+	public void run(){
+		try{
+			//아이디확정
 			id = dis.readUTF();
-			pln("< 당신의 아이디는 [ " + id + " ]입니다. > ");
+			pln("< 당신의 아이디는 [ "+id+" ]입니다. > ");
 
-			while (true) {
+			while(true){
 				String msg = dis.readUTF();
-				pln(msg);
-				// choice();
+				if(msg.contains("@a_r_b_o_k")){
+					procedure(msg);
+				}else{
+					pln(msg);
+				}
+				//choice();
 			}
-
 		} catch (IOException ie) {
 			pln("서버가 다운됐습니다. \n 3초 후에 종료됩니다.");
 			try {
@@ -96,9 +106,7 @@ class StuClient extends Thread {
 		} finally {
 			closeA();
 		}
-
 	}
-
 	void closeA() {
 		try {
 			if (dos != null)
@@ -114,16 +122,13 @@ class StuClient extends Thread {
 		} catch (IOException ie) {
 		}
 	}
-
 	void pln(String str) {
 		System.out.println(str);
 	}
-
 	void p(String str) {
 		System.out.print(str);
 	}
 }
-
 		// 서브쓰레드 선언해줌 - 메인클래스에서 void msg 옮겨옴
 class Msg implements Runnable {
 	DataOutputStream dos;
@@ -136,7 +141,6 @@ class Msg implements Runnable {
 	public void run() {
 		msg();
 	}
-
 	void msg() {
 		String msg = "";
 
@@ -155,3 +159,10 @@ class Msg implements Runnable {
 		}
 	}
 }
+
+/*class Tmsg implements Runnable{
+
+	void msg(){
+	}
+}
+*/
