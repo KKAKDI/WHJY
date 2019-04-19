@@ -1,7 +1,7 @@
 import java.net.*;
 import java.io.*;
 
-class  StuClient extends Thread {
+class StuClient extends Thread {
 	String ip;
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	Socket s;
@@ -12,108 +12,146 @@ class  StuClient extends Thread {
 	String id;
 	boolean rop = false;
 	int port = 3524;
+	ClientLoginUI clui = new ClientLoginUI();
+	Thread t1, t2;
 
-	StuClient(){
-		connect();
+	StuClient(ClientLoginUI clui) {
+		this.clui = clui;
 	}
-	void connect(){
-		try{
-			p("서버 IP : "); // (기본 IP : 127.0.0.1)
-			ip=br.readLine();
-			if(ip != null) ip=ip.trim();
-			if(ip.length() == 0) ip="127.0.0.1"; //채연 ip 203.236.209.207
 
-//			p("포트 : "); //(기본 port : 3524) 
-//			String portP = br.readLine();
-//			if(portP != null) portP=portP.trim();
-//			if(portP.length() == 0) portP="3524";
-//			port = Integer.parseInt(portP);
+	void connect() {
+		try {
+			ip = clui.ipstart;
+			if (ip != null)
+				ip = ip.trim();
 
-			s = new Socket(ip,port);
-			pln("서버와 연결되었습니다."); //연결button
+			s = new Socket(ip, port);
+			pln(ip + " 가 서버와 연결되었습니다."); // 연결button
 			is = s.getInputStream();
 			os = s.getOutputStream();
 			dis = new DataInputStream(is);
 			dos = new DataOutputStream(os);
 
-			name();
-			start();
-			msg();
+			//Runnable 클래스 추가 (서브쓰레드 사용)
+			Runnable msg = new Msg(dos);
+			t1 = new Thread(msg);
+			t2 = new Thread(this);
 
-		}catch(UnknownHostException uhe){ 
+			name();
+			t1.start();
+			t2.start();
+
+		} catch (UnknownHostException uhe) {
 			pln("해당 서버가 존재하지 않습니다.");
 			connect();
-		}catch(IOException ie){
+		} catch (IOException ie) {
 			connect();
-		}catch(NumberFormatException nfe){
+		} catch (NumberFormatException nfe) {
 			pln("존재하지 않는 포트번호입니다.");
-			connect(); //재귀호출
+			connect(); // 재귀호출
 		}
 	}
-	void name(){
-		p( "닉네임 :  ");
-		try{
-			id = br.readLine();
-			if(id != null) id.trim();
-			if(id.length() ==0) id="User";
+
+	void name() {
+		try {
+			id = clui.idstart;
+			if (id != null)
+				id.trim();
+			if (id.length() == 0)
+				id = "User";
 			dos.writeUTF(id);
 			dos.flush();
-		}catch(IOException ie){}
+			p(id + "님이 입장하셨습니다.");
+		} catch (IOException ie) {
+		}
+
 	}
-	void choice(){ //패 선택
+
+	void choice() { // 패 선택
 		int i = 1;
 		int j = 2;
-		String str = (i!=j)? "패1" : "패2";
+		String str = (i != j) ? "패1" : "패2";
 	}
-	public void run(){
-		try{
-			//아이디확정
-			id = dis.readUTF();
-			pln("< 당신의 아이디는 [ "+id+" ]입니다. > ");
 
-			while(true){
+	public void run() { // 채팅 읽어오기
+
+		try {
+			// 아이디확정
+			id = dis.readUTF();
+			pln("< 당신의 아이디는 [ " + id + " ]입니다. > ");
+
+			while (true) {
 				String msg = dis.readUTF();
 				pln(msg);
-				//choice();
+				// choice();
 			}
-		}catch(IOException ie){
+
+		} catch (IOException ie) {
 			pln("서버가 다운됐습니다. \n 3초 후에 종료됩니다.");
-			try{
+			try {
 				Thread.sleep(3000);
 				System.exit(0);
-			}catch(InterruptedException ite){}
-		}finally{
+			} catch (InterruptedException ite) {
+			}
+		} finally {
 			closeA();
 		}
+
 	}
-	void msg(){
+
+	void closeA() {
+		try {
+			if (dos != null)
+				dos.close();
+			if (dis != null)
+				dis.close();
+			if (os != null)
+				os.close();
+			if (is != null)
+				is.close();
+			if (s != null)
+				s.close();
+		} catch (IOException ie) {
+		}
+	}
+
+	void pln(String str) {
+		System.out.println(str);
+	}
+
+	void p(String str) {
+		System.out.print(str);
+	}
+}
+
+		// 서브쓰레드 선언해줌 - 메인클래스에서 void msg 옮겨옴
+class Msg implements Runnable {
+	DataOutputStream dos;
+	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+	Msg(DataOutputStream dos) {
+		this.dos = dos;
+	}
+
+	public void run() {
+		msg();
+	}
+
+	void msg() {
 		String msg = "";
-		try{
-			while(true){
+
+		try {
+			while (true) {
 				msg = br.readLine();
 				dos.writeUTF(msg);
 				dos.flush();
 			}
-		}catch(IOException ie){
-			closeA();
+		} catch (IOException ie) {
+			try {
+				if (dos != null)
+					dos.close();
+			} catch (Exception e) {
+			}
 		}
-	}
-	void closeA(){
-		try{
-			if(dos != null) dos.close();
-			if(dis != null) dis.close();
-			if(os != null) os.close();
-			if(is != null) is.close();
-			if(s != null) s.close();
-		}catch(IOException ie){}
-	}
-	void pln(String str){
-		System.out.println(str);
-	}
-	void p(String str){
-		System.out.print(str);
-	}
-	public static void main(String[] args) {
-		new StuClient();
 	}
 }
