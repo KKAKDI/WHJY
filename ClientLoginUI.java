@@ -39,7 +39,7 @@ class ClientLoginUI extends JFrame implements ActionListener {
 
 		jt1.addActionListener(this);
 		p3.add(new JLabel(" [ 서  버  I P ]"));
-		p3.add(jt2 = new JTextField("203.236.209.213", 15));
+		p3.add(jt2 = new JTextField("localhost", 15));
 		p5.add(new JLabel(" [ 닉  네  임 ]"));
 		p5.add(jt3);
 		p7.add(b1);
@@ -68,7 +68,8 @@ class ClientLoginUI extends JFrame implements ActionListener {
 				JOptionPane.showMessageDialog(null, "IP를 다시입력해주세요.");
 			} else {
 				sc = new StuClient(this);
-				sc.connect();	//메인쓰레드 호출
+				sc.connect();	//메인쓰레드 호출 
+				setVisible(false);
 			}
 		} else if (obj == b2) {
 			System.exit(0);
