@@ -25,6 +25,7 @@ class StuClient extends Thread {
 	Thread t1;
 	int cards1[] = new int[4];
 	int cards2[] = new int[4];
+	int i;
 
 	StuClient(ClientLoginUI clui) {
 		this.clui = clui;
@@ -71,8 +72,7 @@ class StuClient extends Thread {
 			if (id.length() == 0)
 				id = "User";
 			dos.writeUTF(id);
-			dos.flush();
-			// mf.jta1.append(id + "님이 입장하셨습니다.\n");
+			dos.flush();		
 		} catch (IOException ie) {
 		}
 
@@ -81,19 +81,19 @@ class StuClient extends Thread {
 	//프로토콜에 따라 메소드 실행
 	void procedure(String msg) {
 		String items[] = msg.split("_");
-		
-		int i =0;
+		if(i>3) i=0;
+	
 		//첫번째 패 선택
-		if (items[0].equals("#card1")) {
-			pln(items[1]);
+		if (items[0].equals("#card1")) {			
 			cards1[i] = Integer.parseInt(items[1]);
+			pln(""+cards1[i]);
 			mf.jbp7.setIcon(mf.cardMach(cards1[i]));
 			i++;
 		
 		//두번째 패 선택
-		} else if (items[0].equals("#card2")) {
-			pln(items[1]);
+		} else if (items[0].equals("#card2")) {			
 			cards2[i] = Integer.parseInt(items[1]); 
+			pln(""+cards2[i]);
 			mf.jbp8.setIcon(mf.cardMach(cards2[i]));
 			i++;
 		
@@ -112,15 +112,21 @@ class StuClient extends Thread {
 			int memCount = Integer.parseInt(memInfo[0]);
 			for(int j = 1; j<(memCount+1); j++){
 				scs.add(memInfo[j]);	
-				pln(""+memInfo[j]);
+				
 			}
-		
+			//idMach();
 		//게임참가 유저리스트 초기화
 		} else if(items[0].equals("#end")) {	
 			scs.removeAllElements();
 
 		} else {
 			pln("존재하지 않는 프로토콜입니다");
+		}
+	}
+	
+	void idMach() {
+		for(int i=0;i<scs.size();i++) {
+			pln(scs.get(i));
 		}
 	}
 
@@ -209,6 +215,7 @@ class StuClient extends Thread {
 		JLabel jwl1, jwl2, jwl3, jwl4;
 		JLabel jli1, jli2, jli3, jli4, jli5; // 로고 , 캐릭터이미지
 		JLabel jbc1, jbc2, jbc3, jbc4, jbc5, jbc6, jbc7, jbc8, jbc9; // 중앙라벨
+		JLabel jlp1, jlp2, jlp3, jlp4, jlp5, jlp6;
 		JButton jbb1, jbb2, jbb3, jbb4; // 배팅이미지 버튼
 		JButton jbp1, jbp2, jbp3, jbp4, jbp5, jbp6, jbp7, jbp8; // 패 버튼
 		JButton jbj1, jbj2, jbj3, jbj4; // 유저 족보 나타내기
@@ -249,8 +256,34 @@ class StuClient extends Thread {
 		ImageIcon i44 = new ImageIcon("./image/완성/logo.png");
 		ImageIcon i45 = new ImageIcon("./image/완성/원하지연.png");
 
-		ImageIcon i100 = new ImageIcon("./패 이미지/패뒷면.png");
+		ImageIcon i100 = new ImageIcon("./image/완성/화투이미지/background.png");
 
+		ImageIcon cardMach(int cards) {			
+			switch (cards) {
+				case 1 : return i1;
+				case 2 : return i2;
+				case 3 : return i3;
+				case 4 : return i4;
+				case 5 : return i5;
+				case 6 : return i6;
+				case 7 : return i7;
+				case 8 : return i8;
+				case 9 : return i9;
+				case 10 : return i10;
+				case 11 : return i11;
+				case 12 : return i12;
+				case 13 : return i13;
+				case 14 : return i14;
+				case 15 : return i15;
+				case 16 : return i16;
+				case 17 : return i17;
+				case 18 : return i18;
+				case 19 : return i19;
+				case 20 : return i20;
+			}
+			return i100;			
+		}
+		
 		void cliIN() {
 			Color k = new Color(80, 120, 32);
 			cm1 = getContentPane();
@@ -299,8 +332,8 @@ class StuClient extends Thread {
 			c2p2.add(jli2 = new JLabel(i30));
 			c2p2.add(jbub2 = new JButton(i41));
 			c2p2.add(jbj2 = new JButton(i40));
-			c1p2.add(jbp3 = new JButton());
-			c1p2.add(jbp4 = new JButton());
+			c1p2.add(jlp1 = new JLabel(i100));
+			c1p2.add(jlp2 = new JLabel(i100));
 
 			//시스템로그 패널
 			jta1 = new JTextArea(11, 32);
@@ -316,8 +349,8 @@ class StuClient extends Thread {
 			c2p4.add(jli1 = new JLabel(i31)); // 0
 			c2p4.add(jbub1 = new JButton());
 			c2p4.add(jbj1 = new JButton());
-			c1p4.add(jbp1 = new JButton());
-			c1p4.add(jbj2 = new JButton());
+			c1p4.add(jlp3 = new JLabel(i100));
+			c1p4.add(jlp4 = new JLabel(i100));
 
 			//중앙 패널
 			c1p5.add(jbc1 = new JLabel());
@@ -337,8 +370,8 @@ class StuClient extends Thread {
 			c2p6.add(jli3 = new JLabel(i32)); // 2;
 			c2p6.add(jbub3 = new JButton());
 			c2p6.add(jbj3 = new JButton());
-			c1p6.add(jbp5 = new JButton());
-			c1p6.add(jbp6 = new JButton());
+			c1p6.add(jlp5 = new JLabel(i100));
+			c1p6.add(jlp6 = new JLabel(i100));
 
 			//자신의 족보,배팅 패널
 			c1p7.add(mb1 = new JButton());
@@ -351,8 +384,8 @@ class StuClient extends Thread {
 			c2p7.add(jbb4 = new JButton(i43));
 
 			//자신의 패널
-			c1p8.add(mb1 = new JButton());
-			c1p8.add(mb1 = new JButton());
+			c1p8.add(jbp7 = new JButton());
+			c1p8.add(jbp8 = new JButton());
 			c1p8.add(c2p8 = new JPanel());
 			c2p8.setLayout(new GridLayout(3,1));
 			c2p8.setBackground(k);

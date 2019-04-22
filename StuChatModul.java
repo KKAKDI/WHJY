@@ -171,24 +171,25 @@ class StuCM extends Thread {
 						token = token + t + gmem.id;
 					}
 					modul.dos.writeUTF(token);
-				//카드1
-				}else if(flag.equals("card1")){
-					modul.dos.writeUTF("#card1_"+msg);
-				//카드2
-				}else if(flag.equals("card2")){
-					modul.dos.writeUTF("#card2_"+msg);
-				//족보
-				}else if(flag.equals("power")){
-					modul.dos.writeUTF("#power_"+msg);
-				//승리
-				}else if(flag.equals("judge")){
-					modul.dos.writeUTF("#judge_"+msg);
-				//배팅
-				}else if(flag.equals("batting")){
-					modul.dos.writeUTF("#batting_"+msg);
-				//게임끝
-				}else if(flag.equals("end")){
-					modul.dos.writeUTF("#end_"+msg);
+					//현재 게임로직에서 수행 중
+//				//카드1
+//				}else if(flag.equals("card1")){
+//					modul.dos.writeUTF("#card1_"+msg);
+//				//카드2
+//				}else if(flag.equals("card2")){
+//					modul.dos.writeUTF("#card2_"+msg);
+//				//족보
+//				}else if(flag.equals("power")){
+//					modul.dos.writeUTF("#power_"+msg);
+//				//승리
+//				}else if(flag.equals("judge")){
+//					modul.dos.writeUTF("#judge_"+msg);
+//				//배팅
+//				}else if(flag.equals("batting")){
+//					modul.dos.writeUTF("#batting_"+msg);
+//				//게임끝
+//				}else if(flag.equals("end")){
+//					modul.dos.writeUTF("#end_"+msg);
 				}else{
 					sts.pln("존재않는 프로토콜");
 				}
