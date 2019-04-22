@@ -20,6 +20,8 @@ class StuClient extends Thread {
 	MainFrame mf;
 	Thread t1;
 	Vector<String> scs = new Vector<String>();
+	int cards1[] = new int[4];
+	int cards2[] = new int[4];
 
 	StuClient(ClientLoginUI clui) {
 		this.clui = clui;
@@ -80,17 +82,22 @@ class StuClient extends Thread {
 //}
 	void procedure(String msg) {// 클라이언트 순서
 		String items[] = msg.split("_");
-
+		
+		int i =0;
 		if (items[0].equals("#card1")) {
-			pln("대충 card1 값이 잘 들어와있다는 뜻");
-		} else if (items[0].equals("#card1")) {
-
+			pln(items[1]);
+			cards1[i] = Integer.parseInt(items[1]);
+			mf.jbp7.setIcon(mf.cardMach(cards1[i]));
+			i++;
 		} else if (items[0].equals("#card2")) {
-
+			pln(items[1]);
+			cards2[i] = Integer.parseInt(items[1]); 
+			mf.jbp8.setIcon(mf.cardMach(cards2[i]));
+			i++;
 		} else if (items[0].equals("#power")) {
-
+			
 		} else if (items[0].equals("#judge")) {
-
+			
 		} else if (items[0].equals("#log")) {
 
 		} else {
@@ -190,40 +197,66 @@ class StuClient extends Thread {
 		String msg;
 
 		// 이미지 공유폴더에 업로드 해줄 것
-		ImageIcon i1 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/1+.png");
-		ImageIcon i2 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/2+.png");
-		ImageIcon i3 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/3+.png");
-		ImageIcon i4 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/4+.png");
-		ImageIcon i5 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/5+.png");
-		ImageIcon i6 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/6+.png");
-		ImageIcon i7 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/7+.png");
-		ImageIcon i8 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/8+.png");
-		ImageIcon i9 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/9+.png");
-		ImageIcon i10 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/10+.png");
-		ImageIcon i11 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/1-.png");
-		ImageIcon i12 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/2-.png");
-		ImageIcon i13 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/3-.png");
-		ImageIcon i14 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/4-.png");
-		ImageIcon i15 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/5-.png");
-		ImageIcon i16 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/6-.png");
-		ImageIcon i17 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/7-.png");
-		ImageIcon i18 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/8-.png");
-		ImageIcon i19 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/9-.png");
-		ImageIcon i20 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/화투이미지/10-.png");
+		ImageIcon i1 = new ImageIcon("./image/완성/화투이미지/1+.png");
+		ImageIcon i2 = new ImageIcon("./image/완성/화투이미지/2+.png");
+		ImageIcon i3 = new ImageIcon("./image/완성/화투이미지/3+.png");
+		ImageIcon i4 = new ImageIcon("./image/완성/화투이미지/4+.png");
+		ImageIcon i5 = new ImageIcon("./image/완성/화투이미지/5+.png");
+		ImageIcon i6 = new ImageIcon("./image/완성/화투이미지/6+.png");
+		ImageIcon i7 = new ImageIcon("./image/완성/화투이미지/7+.png");
+		ImageIcon i8 = new ImageIcon("./image/완성/화투이미지/8+.png");
+		ImageIcon i9 = new ImageIcon("./image/완성/화투이미지/9+.png");
+		ImageIcon i10 = new ImageIcon("./image/완성/화투이미지/10+.png");
+		ImageIcon i11 = new ImageIcon("./image/완성/화투이미지/1-.png");
+		ImageIcon i12 = new ImageIcon("./image/완성/화투이미지/2-.png");
+		ImageIcon i13 = new ImageIcon("./image/완성/화투이미지/3-.png");
+		ImageIcon i14 = new ImageIcon("./image/완성/화투이미지/4-.png");
+		ImageIcon i15 = new ImageIcon("./image/완성/화투이미지/5-.png");
+		ImageIcon i16 = new ImageIcon("./image/완성/화투이미지/6-.png");
+		ImageIcon i17 = new ImageIcon("./image/완성/화투이미지/7-.png");
+		ImageIcon i18 = new ImageIcon("./image/완성/화투이미지/8-.png");
+		ImageIcon i19 = new ImageIcon("./image/완성/화투이미지/9-.png");
+		ImageIcon i20 = new ImageIcon("./image/완성/화투이미지/10-.png");
 
-		ImageIcon i30 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/캐릭터이미지/char1.png");
-		ImageIcon i31 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/캐릭터이미지/char2.png");
-		ImageIcon i32 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/캐릭터이미지/char3.png");
-		ImageIcon i33 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/캐릭터이미지/char4.png");
+		ImageIcon i30 = new ImageIcon("./image/완성/캐릭터이미지/char1.png");
+		ImageIcon i31 = new ImageIcon("./image/완성/캐릭터이미지/char2.png");
+		ImageIcon i32 = new ImageIcon("./image/완성/캐릭터이미지/char3.png");
+		ImageIcon i33 = new ImageIcon("./image/완성/캐릭터이미지/char4.png");
 
-		ImageIcon i40 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/call.png");
-		ImageIcon i41 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/harf.png");
-		ImageIcon i42 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/allin.png");
-		ImageIcon i43 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/die.png");
-		ImageIcon i44 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/logo.png");
-		ImageIcon i45 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/image/완성/원하지연.png");
+		ImageIcon i40 = new ImageIcon("./image/완성/call.png");
+		ImageIcon i41 = new ImageIcon("./image/완성/harf.png");
+		ImageIcon i42 = new ImageIcon("./image/완성/allin.png");
+		ImageIcon i43 = new ImageIcon("./image/완성/die.png");
+		ImageIcon i44 = new ImageIcon("./image/완성/logo.png");
+		ImageIcon i45 = new ImageIcon("./image/완성/원하지연.png");
 
-		ImageIcon i100 = new ImageIcon("C:/Users/BITSC-6-20/Desktop/TPJT1/패 이미지/패뒷면.png");
+		ImageIcon i100 = new ImageIcon("./image/완성/화투이미지/back.png");
+		
+		ImageIcon cardMach(int cards) {
+			switch (cards) {
+			case 1:  return i1;
+			case 2: return i2;
+			case 3: return i3;
+			case 4: return i4;
+			case 5: return i5;
+			case 6: return i6;
+			case 7: return i7;
+			case 8: return i8;
+			case 9: return i9;
+			case 10: return i10;
+			case 11: return i11;
+			case 12: return i12;
+			case 13: return i13;
+			case 14: return i14;
+			case 15: return i15;
+			case 16: return i16;
+			case 17: return i17;
+			case 18: return i18;
+			case 19: return i19;
+			case 20: return i20;							
+			}
+			return i100;
+		}
 
 		void cliIN() {
 			cm1 = getContentPane();
@@ -257,9 +290,9 @@ class StuClient extends Thread {
 			c2p2.add(jli2 = new JLabel(i30));
 			c2p2.add(jlj2 = new JLabel()); // jokbo(sts.gl.powers[1])
 			c2p2.add(jwl2 = new JLabel()); // win(sts.gl.judge(), 1)
-			c1p2.add(jbp3 = new JButton()); // inImg(sts.gl.card1[1])
+			c1p2.add(jbp3 = new JButton(i100)); // inImg(sts.gl.card1[1])
 			//jbp3.addActionListener(this);
-			c1p2.add(jbp4 = new JButton()); // inImg(sts.gl.card2[1])
+			c1p2.add(jbp4 = new JButton(i100)); // inImg(sts.gl.card2[1])
 			//jbp4.addActionListener(this);
 
 			jta1 = new JTextArea(11, 32);
@@ -270,8 +303,8 @@ class StuClient extends Thread {
 			c2p4.setLayout(new FlowLayout());
 			c2p4.add(jli3 = new JLabel(i31)); // 0
 			c2p4.add(jwl1 = new JLabel());
-			c1p4.add(jbp1 = new JButton());
-			c1p4.add(jbp2 = new JButton());
+			c1p4.add(jbp1 = new JButton(i100));
+			c1p4.add(jbp2 = new JButton(i100));
 
 			c1p5.add(mb1 = new JButton());
 			c1p5.add(mb1 = new JButton());
@@ -288,8 +321,8 @@ class StuClient extends Thread {
 			c2p6.add(jli4 = new JLabel(i32)); // 2
 			c2p6.add(jlj3 = new JLabel());
 			c2p6.add(jwl3 = new JLabel());
-			c1p6.add(jbp5 = new JButton());
-			c1p6.add(jbp6 = new JButton());
+			c1p6.add(jbp5 = new JButton(i100));
+			c1p6.add(jbp6 = new JButton(i100));
 
 			c1p7.add(mb1 = new JButton());
 			c1p7.add(c2p7 = new JPanel());
@@ -303,9 +336,9 @@ class StuClient extends Thread {
 			c1p8.add(c2p9 = new JPanel(), BorderLayout.SOUTH);
 			c2p8.setLayout(new GridLayout(1, 2));
 			c2p9.setLayout(new GridLayout(1, 3));
-			c2p8.add(jbp7 = new JButton());
+			c2p8.add(jbp7 = new JButton(i100));
 			//jbp7.addActionListener(this);
-			c2p8.add(jbp8 = new JButton());
+			c2p8.add(jbp8 = new JButton(i100));
 			//jbp8.addActionListener(this);
 			c2p9.add(mb1 = new JButton());
 			c2p9.add(jwl4 = new JLabel()); // 3
