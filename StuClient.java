@@ -25,7 +25,7 @@ class StuClient extends Thread {
 	Thread t1;
 	int cards1[] = new int[4];
 	int cards2[] = new int[4];
-	int i;
+	int cnt1, cnt2;
 
 	StuClient(ClientLoginUI clui) {
 		this.clui = clui;
@@ -50,9 +50,7 @@ class StuClient extends Thread {
 			protocol("#log_서버와 연결되었습니다."); // 연결button
 
 			name();
-		
 			t1.start();
-			idMach();
 		} catch (UnknownHostException uhe) {
 			pln("해당 서버가 존재하지 않습니다.");
 			connect();
@@ -81,20 +79,23 @@ class StuClient extends Thread {
 	// 프로토콜에 따라 메소드 실행
 	void protocol(String msg) {
 		String items[] = msg.split("_");
-		if (i > 3)
-			i = 0;
+		if (cnt1 > 3 || cnt2 > 3) {
+			cnt1 = 0;
+			cnt2 = 0;
+		}
+
 		// 첫번째 패 선택
 		if (items[0].equals("#card1")) {
-			cards1[i] = Integer.parseInt(items[1]);
-			pln("" + cards1[i]);
+			cards1[cnt1] = Integer.parseInt(items[1]);
+			pln("" + cards1[cnt1]);
 			// mf.jbp7.setIcon(mf.cardMach(cards1[i]));
-			i++;
+			cnt1++;
 			// 두번째 패 선택
 		} else if (items[0].equals("#card2")) {
-			cards2[i] = Integer.parseInt(items[1]);
-			pln("" + cards2[i]);
+			cards2[cnt2] = Integer.parseInt(items[1]);
+			pln("" + cards2[cnt2]);
 			// mf.jbp8.setIcon(mf.cardMach(cards2[i]));
-			i++;
+			cnt2++;
 			// 족보확인
 		} else if (items[0].equals("#power")) {
 			pln("족 보");
@@ -111,7 +112,11 @@ class StuClient extends Thread {
 			int memCount = Integer.parseInt(memInfo[0]);
 			for (int j = 1; j < (memCount + 1); j++) {
 				scs.add(memInfo[j]);
-			}			
+			}
+			// 게임 시작시 패 뿌리기 시작
+		} else if (items[0].equals("#start")) {
+			pln("시작");
+			idMach();
 			// 게임참가 유저리스트 초기화
 		} else if (items[0].equals("#end")) {
 			scs.removeAllElements();
@@ -119,22 +124,26 @@ class StuClient extends Thread {
 			pln("존재하지 않는 프로토콜입니다" + msg);
 		}
 	}
-	//게임시작 신호 필요
-	void idMach() {
-		try {
-			for (int k = 0; k < scs.size();k++) {
-				if (id == scs.get(k)) {
-					// mf.jbub4.setText(scs.get(j));
-					Thread.sleep(500);
-					mf.jbp7.setIcon(mf.cardMach(cards1[k]));
-					Thread.sleep(500);
-					mf.jbp8.setIcon(mf.cardMach(cards2[k]));
 
-				} else {
-					Thread.sleep(500);
-					mf.jbp5.setIcon(mf.cardMach(cards1[k]));
-					Thread.sleep(500);
-					mf.jbp6.setIcon(mf.cardMach(cards2[k]));
+
+	void idMach() {		
+		try {
+			//내 아이디와 같을경우 6시에 패
+			for (int i = 0; i < scs.size(); i++) {
+				if (id.equals(scs.get(i))) {		
+					Thread.sleep(300);
+					mf.jbp7.setIcon(mf.cardMach(cards1[i]));
+					Thread.sleep(300);
+					mf.jbp8.setIcon(mf.cardMach(cards2[i]));
+					Thread.sleep(300);
+				} else { //그렇지 않은경우 12시에 패
+					pln(scs.get(i));
+					mf.jbub2.setText(scs.get(i));
+					Thread.sleep(300);
+					mf.jlp1.setIcon(mf.cardMach(cards1[i]));
+					Thread.sleep(300);
+					mf.jlp2.setIcon(mf.cardMach(cards2[i]));
+					Thread.sleep(300);
 				}
 			}
 		} catch (Exception e) {
@@ -152,7 +161,8 @@ class StuClient extends Thread {
 				String msg = dis.readUTF();
 				// 순서 판별
 				if (msg.contains("#mem_") || msg.contains("#log_") || msg.contains("#card1_") || msg.contains("#card2_")
-						|| msg.contains("#power_") || msg.contains("#judge_") || msg.contains("#end_")) {
+						|| msg.contains("#power_") || msg.contains("#judge_") || msg.contains("#end_")
+						|| msg.contains("#start_")) {
 					protocol(msg);
 				} else {
 					mf.jta2.append(msg + "\n");
@@ -251,7 +261,7 @@ class StuClient extends Thread {
 		ImageIcon i44 = new ImageIcon("./image/완성/logo.png");
 		ImageIcon i45 = new ImageIcon("./image/완성/원하지연.png");
 
-		ImageIcon i100 = new ImageIcon("./image/완성/화투이미지/background.png");
+		ImageIcon i100 = new ImageIcon("./image/완성/화투이미지/back.png");
 
 		ImageIcon cardMach(int cards) {
 			switch (cards) {
@@ -345,7 +355,7 @@ class StuClient extends Thread {
 			c2p2.setLayout(new BoxLayout(c2p2, BoxLayout.Y_AXIS));
 			c2p2.setBackground(k);
 			c2p2.add(jli2 = new JLabel(i30));
-			c2p2.add(jbub2 = new JButton(i41));
+			c2p2.add(jbub2 = new JButton());
 			c2p2.add(jbj2 = new JButton(i40));
 			c1p2.add(jlp1 = new JLabel(i100));
 			c1p2.add(jlp2 = new JLabel(i100));

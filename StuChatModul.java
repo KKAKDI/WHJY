@@ -190,7 +190,10 @@ class StuCM extends Thread {
 //				//게임끝
 //				}else if(flag.equals("end")){
 //					modul.dos.writeUTF("#end_"+msg);
-				}else{
+				}else if(flag.equals("start")) { //게임시작 프로토콜
+					modul.dos.writeUTF("#start_"+msg);
+				}
+				else{
 					sts.pln("존재않는 프로토콜");
 				}
 

@@ -106,7 +106,8 @@ class StuServer extends Thread {
 				cm.broadcast("mem", "게임참가 멤버정보 전달");	
 				gl = new GameLogic(this, cv.size());
 				gl.cntUser();
-
+				//게임시작 신호
+				cm.broadcast("start","게임 시작");
 				//레디초기화
 				for (StuCM re : cv) {
 					re.ready = false;
