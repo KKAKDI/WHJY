@@ -13,6 +13,7 @@ class StuServer extends Thread {
 	boolean gm = true; // 게임중(game middle)인지 아닌지 확인하는 조건
 	boolean acc = true; // 서버입장(accpetClient) 반복문 조건
 	GameLogic gl;
+	boolean isStop; //쓰레드 종료를 위한 변수설정
 
 	// 스탠드업 모듈
 	StuCM cm;
@@ -65,14 +66,13 @@ class StuServer extends Thread {
 
 				// 모듈시작
 				cm.start();
-				// 인원제한
 
+				// 인원제한
 				if (cv.size() >= 4)
 					acc = false;
-
+					setStop(false);
 			}
 		} catch (SocketException se) {
-
 			pln("서버종료됨" + se + cs);
 		} catch (IOException io) {
 			pln("IO익셉션[acceptClient()]이 발생하였습니다" + io);
@@ -80,38 +80,62 @@ class StuServer extends Thread {
 	}
 
 	// 클라이언트의 레디 받기 (2명~4명)
-	void ready4Client() {
-
+	void ready4Client(StuCM cli) {
 		readyCount = 0;
 
-		for (StuCM re : cv) {
-			if (re.ready == true)
-				readyCount++;
+		if(cli.ready==true){
+			//사용자의 레디수 확인하기
+			for (StuCM re : cv) {
+				if (re.ready == true) readyCount++;
+			}
+			//레디정보 브로드캐스팅
+			cm.broadcast(cli.id + "님이 준비 완료되었습니다! ( 준비 인원 " + readyCount + "/" + cv.size() + "명 )");
+			pln(cli.id + "님이 준비 완료되었습니다. ( 준비 인원 " + readyCount + "/" + cv.size() + "명 )");
 		}
 
+		//게임을 시작할 수 있는 조건 확인
 		if (cv.size() < 2) {
 			cm.broadcast("2명 이상의 플레이어가 있어야 게임이 시작됩니다.");
 			pln("2명 이상의 플레이어가 있어야 게임이 시작됩니다.");
 		} else if (cv.size() >= 2 & cv.size() < 5) {
+			//[레디수 = 사람수]일 때, 게임 시작
 			if (readyCount == cv.size() & readyCount >= 2) {
-				gm = false;
-				// acceptClient();
+				setStop(false);
 				cm.broadcast("게임을 시작합니다");
 				pln("게임을 시작합니다.");
 				cm.isYourGmMem();	
 				gl = new GameLogic(this, cv.size());
 				gl.start();
-				readyCount = 0;
+
+				//레디초기화
+				for (StuCM re : cv) {
+					re.ready = false;
+				}
 			} else {
 				cm.broadcast("참가 플레이어 모두가 레디를 해야 게임이 시작됩니다.");
 				pln("참가 플레이어 모두가 레디를 해야 게임이 시작됩니다.");
 			}
 		}
+
+		//게임끝 초기화
+		if (gm==false) {
+			readyCount = 0;
+			acc = true;
+			gm = true;
+			setStop(true);
+		}
 	}
 
 	// 오버라이딩
 	public void run() {
-		acceptClient();
+		while(!isStop){
+			acceptClient();
+		}
+	}
+
+	//쓰레드종료
+	public void setStop(boolean isStop){
+		this.isStop = isStop;
 	}
 
 	void pln(String str) {

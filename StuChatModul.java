@@ -66,12 +66,19 @@ class StuCM extends Thread {
 			}
 
 		} catch (IOException ie) {
+			//레디상태에서 나갔을 때 값 초기화
+			if(ready==true){
+				sts.readyCount--;
+				sts.ready4Client(this);
+			}
+			//나간 사용자 정보 삭제
 			sts.cv.remove(this);
 			broadcast(id + "님이 퇴장하셨습니다. ( 총 인원 " + sts.cv.size() + "명 )");
 			sts.pln(id + "님이 퇴장하셨습니다. ( 총 인원 " + sts.cv.size() + "명 )");
+			//현사용자가 3명이하면 새 사용자를 받는다.
 			if (sts.cv.size() <= 3) {
 				sts.acc = true;
-				sts.acceptClient();
+				sts.setStop(true);
 			}
 		} finally {
 			closeA();
@@ -82,23 +89,24 @@ class StuCM extends Thread {
 	void readygo(String msg) {
 		// 사용자가 gidaktp(향마세)라 입력하면 레디됨
 		if (msg.equals("gidaktp")) {
-			ready = true;
-			sts.ready4Client();
-			broadcast(id + "님이 준비 완료되었습니다! ( 준비 인원 " + sts.readyCount + "/" + sts.cv.size() + "명 )");
-			sts.pln(id + "님이 준비 완료되었습니다. ( 준비 인원 " + sts.readyCount + "/" + sts.cv.size() + "명 )");
-
+			if(ready==false){
+				ready = true;
+				sts.ready4Client(this);
+			}
 			// 사용자가 tpgidak(세향마)라 입력하면 레디취소됨
 		} else if (msg.equals("tpgidak")) {
-			if (sts.readyCount == sts.cv.size()) {
+			if (sts.cv.size()>=2 & sts.readyCount == sts.cv.size()) {
 				broadcast("게임이 시작되어 레디를 취소할 수 없습니다.");
-			} else {
-				ready = false;
-				sts.readyCount--;
-				broadcast(id + "님이 대기 상태입니다. ( 준비 인원 " + sts.readyCount + "/" + sts.cv.size() + "명 )");
-				sts.pln(id + "님이 대기 상태입니다. ( 준비 인원 " + sts.readyCount + "/" + sts.cv.size() + "명 )");
-				sts.ready4Client();
+			}else{
+				if(ready==true){
+					ready = false;
+					sts.readyCount--;
+					broadcast(id + "님이 대기 상태입니다. ( 준비 인원 " + sts.readyCount + "/" + sts.cv.size() + "명 )");
+					sts.pln(id + "님이 대기 상태입니다. ( 준비 인원 " + sts.readyCount + "/" + sts.cv.size() + "명 )");
+					sts.ready4Client(this);
+				}		
 			}
-		} else {
+		}else{
 			broadcast(id + " : " + msg);
 			sts.pln(id + " : " + msg);
 		}
