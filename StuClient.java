@@ -68,7 +68,6 @@ class StuClient extends Thread {
 			//mf.jta1.append(id + "님이 입장하셨습니다.\n");
 		} catch (IOException ie) {
 		}
-
 	}
 
 //	void choice() { // 패 선택
@@ -77,12 +76,29 @@ class StuClient extends Thread {
 //		String str = (i != j) ? "패1" : "패2";
 //	}
 	void procedure(String msg) {// 클라이언트 순서
-		String items[] = msg.split("/");
-		int a = Integer.parseInt(items[1]);
-
-		for (int i = 2; i < (a + 2); i++) {
-			scs.add(items[i]);
+		String items[] = msg.split("_");
+		
+	
+		if(items[0].equals("#card1")) {
+			pln("대충 card1 값이 잘 들어와있다는 뜻");
+		}else if(items[0].equals("#card1")) {
+			
+		}else if(items[0].equals("#card2")) {
+			
+		}else if(items[0].equals("#power")) {
+			
+		}else if(items[0].equals("#judge")) {
+			
+		}else if(items[0].equals("#log")) {
+			
+		}else {
+			pln("존재하지 않는 프로토콜입니다");
 		}
+//		int a = Integer.parseInt(items[1]);
+//
+//		for (int i = 2; i < (a + 2); i++) {
+//			scs.add(items[i]);
+//		}
 	}
 
 	public void run() { // 읽기
@@ -93,9 +109,26 @@ class StuClient extends Thread {
 
 			while (true) {
 				String msg = dis.readUTF();
+				//순서 판별
 				if (msg.contains("@a_r_b_o_k")) {
+					//procedure(msg);
+				}else if(msg.contains("#log_")) {
 					procedure(msg);
-				} else {
+					pln("대충 로그 창에 띄워진다는 글");
+				}else if(msg.contains("#card1_")) {
+					procedure(msg);
+					pln("대충 자리 카드1 이라는 글");
+				}else if(msg.contains("#card2_")) {
+					procedure(msg);
+					pln("대충 자리 카드2 이라는 글");
+				}else if(msg.contains("#power_")){
+					procedure(msg);
+					pln("대충 족보순위 라는 글");
+				}else if(msg.contains("#judge_")) {
+					procedure(msg);
+					pln("대충 누가 승리했다는 글");
+				}
+				else {
 					mf.jta2.append(msg+"\n");
 				}
 				// choice();

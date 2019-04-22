@@ -105,7 +105,7 @@ class StuServer extends Thread {
 				pln("게임을 시작합니다.");
 				cm.isYourGmMem();	
 				gl = new GameLogic(this, cv.size());
-				gl.start();
+				gl.cntUser();
 
 				//레디초기화
 				for (StuCM re : cv) {
