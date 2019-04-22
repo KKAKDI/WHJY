@@ -103,7 +103,7 @@ class StuServer extends Thread {
 				setStop(false);
 				cm.broadcast("게임을 시작합니다");
 				pln("게임을 시작합니다.");
-				cm.isYourGmMem();	
+				cm.broadcast("mem", "게임참가 멤버정보 전달");	
 				gl = new GameLogic(this, cv.size());
 				gl.cntUser();
 

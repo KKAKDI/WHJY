@@ -57,7 +57,7 @@ class StuCM extends Thread {
 			}
 			isYourId(id);
 
-			broadcast(id + "님이 입장하셨습니다. ( 총 인원 " + sts.cv.size() + "명 )");
+			broadcast("log", id + "님이 입장하셨습니다. ( 총 인원 " + sts.cv.size() + "명 )");
 			sts.pln(id + "님이 입장하셨습니다. ( 총 인원 " + sts.cv.size() + "명 )");
 
 			while (true) {
@@ -73,7 +73,7 @@ class StuCM extends Thread {
 			}
 			//나간 사용자 정보 삭제
 			sts.cv.remove(this);
-			broadcast(id + "님이 퇴장하셨습니다. ( 총 인원 " + sts.cv.size() + "명 )");
+			broadcast("log", id + "님이 퇴장하셨습니다. ( 총 인원 " + sts.cv.size() + "명 )");
 			sts.pln(id + "님이 퇴장하셨습니다. ( 총 인원 " + sts.cv.size() + "명 )");
 			//현사용자가 3명이하면 새 사용자를 받는다.
 			if (sts.cv.size() <= 3) {
@@ -101,7 +101,7 @@ class StuCM extends Thread {
 				if(ready==true){
 					ready = false;
 					sts.readyCount--;
-					broadcast(id + "님이 대기 상태입니다. ( 준비 인원 " + sts.readyCount + "/" + sts.cv.size() + "명 )");
+					broadcast("log", id + "님이 대기 상태입니다. ( 준비 인원 " + sts.readyCount + "/" + sts.cv.size() + "명 )");
 					sts.pln(id + "님이 대기 상태입니다. ( 준비 인원 " + sts.readyCount + "/" + sts.cv.size() + "명 )");
 					sts.ready4Client(this);
 				}		
@@ -128,6 +128,7 @@ class StuCM extends Thread {
 		}
 	}
 
+	//닉넴설정
 	void isYourId(String id) {
 		try {
 			for (StuCM modul : sts.cv) {
@@ -140,34 +141,61 @@ class StuCM extends Thread {
 		}
 	}
 
-	void broadcast(String msg) {
+	//일반채팅
+	void broadcast(String msg){
 		try {
 			for (StuCM modul : sts.cv) {
 				modul.dos.writeUTF(msg);
 				modul.dos.flush();
 			}
-		} catch (IOException ie) {
-		}
+		} catch (IOException ie) {}
 	}
-	//게임로직 실행 전에 게임참가 멤버 순서 및 정보 전달
-	void isYourGmMem(){
-		try{
-			for(StuCM modul : sts.cv){
-				String token = "@a_r_b_o_k";
-				String t = "/";
-				String size = Integer.toString(sts.cv.size());
-				token = token + t + size;
 
-				for(StuCM gmem : sts.cv){
-					token = token + t + gmem.id;
+	//프로토콜정보
+	//flag ~ 로그(log), 카드(card1,2), 족보(power), 승리(judge), 배팅(batting), 참가인원(mem), 게임끝(end)
+	void broadcast(String flag, String msg) {
+		for (StuCM modul : sts.cv) {
+			try {
+				//로그
+				if(flag.equals("log")){
+					modul.dos.writeUTF("#log_"+msg);
+				//참가인원
+				}else if(flag.equals("mem")){
+					sts.pln(modul.id+"클라이언트에 " + msg);
+					String token = "#mem_";
+					String t = "//";
+					String size = Integer.toString(sts.cv.size());
+					token = token + size;
+
+					for(StuCM gmem : sts.cv){
+						token = token + t + gmem.id;
+					}
+					modul.dos.writeUTF(token);
+				//카드1
+				}else if(flag.equals("card1")){
+					modul.dos.writeUTF("#card1_"+msg);
+				//카드2
+				}else if(flag.equals("card2")){
+					modul.dos.writeUTF("#card2_"+msg);
+				//족보
+				}else if(flag.equals("power")){
+					modul.dos.writeUTF("#power_"+msg);
+				//승리
+				}else if(flag.equals("judge")){
+					modul.dos.writeUTF("#judge_"+msg);
+				//배팅
+				}else if(flag.equals("batting")){
+					modul.dos.writeUTF("#batting_"+msg);
+				//게임끝
+				}else if(flag.equals("end")){
+					modul.dos.writeUTF("#end_"+msg);
+				}else{
+					sts.pln("존재않는 프로토콜");
 				}
-				modul.dos.writeUTF(token);
+
 				modul.dos.flush();
-			}
-		}catch(IOException io){
-			sts.pln("isYourGmMem Exception");
+			}catch (IOException ie) {}
 		}
 	}
-	
 
 }

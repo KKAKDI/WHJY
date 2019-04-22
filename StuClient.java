@@ -6,20 +6,23 @@ import java.util.*;
 import javax.swing.*;
 
 class StuClient extends Thread {
+	//서버정보
 	String ip;
-	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	Socket s;
+	int port = 3524;
+
+	//게임 참가 멤버정보
+	String id;
+	Vector<String> scs = new Vector<String>();
+
+	ClientLoginUI clui;
+	MainFrame mf;
+	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	InputStream is;
 	DataInputStream dis;
 	OutputStream os;
 	DataOutputStream dos;
-	String id;
-	boolean rop = false;
-	int port = 3524;
-	ClientLoginUI clui;
-	MainFrame mf;
 	Thread t1;
-	Vector<String> scs = new Vector<String>();
 	int cards1[] = new int[4];
 	int cards2[] = new int[4];
 
@@ -80,34 +83,52 @@ class StuClient extends Thread {
 //	int j = 2;
 //	String str = (i != j) ? "패1" : "패2";
 //}
-	void procedure(String msg) {// 클라이언트 순서
+
+	//프로토콜에 따라 메소드 실행
+	void procedure(String msg) {
 		String items[] = msg.split("_");
 		
 		int i =0;
+		//첫번째 패 선택
 		if (items[0].equals("#card1")) {
 			pln(items[1]);
 			cards1[i] = Integer.parseInt(items[1]);
 			mf.jbp7.setIcon(mf.cardMach(cards1[i]));
 			i++;
+		
+		//두번째 패 선택
 		} else if (items[0].equals("#card2")) {
 			pln(items[1]);
 			cards2[i] = Integer.parseInt(items[1]); 
 			mf.jbp8.setIcon(mf.cardMach(cards2[i]));
 			i++;
+		
+		//족보확인
 		} else if (items[0].equals("#power")) {
-			
+		
+		//승패확인
 		} else if (items[0].equals("#judge")) {
-			
+		
+		//로그
 		} else if (items[0].equals("#log")) {
+
+		//게임참가 유저리스트 및 순서 저장
+		} else if(items[0].equals("#mem")) {	
+			String memInfo[] = items[1].split("//");
+			int memCount = Integer.parseInt 
+				(memInfo[0]);
+			for(int j = 1; j<(memCount+1); j++){
+				scs.add(memInfo[j]);	
+				pln(""+memInfo[j]);
+			}
+		
+		//게임참가 유저리스트 초기화
+		} else if(items[0].equals("#end")) {	
+			scs.removeAllElements();
 
 		} else {
 			pln("존재하지 않는 프로토콜입니다");
 		}
-//	int a = Integer.parseInt(items[1]);
-//
-//	for (int i = 2; i < (a + 2); i++) {
-//		scs.add(items[i]);
-//	}
 	}
 
 	public void run() { // 읽기
@@ -119,8 +140,8 @@ class StuClient extends Thread {
 			while (true) {
 				String msg = dis.readUTF();
 				// 순서 판별
-				if (msg.contains("@a_r_b_o_k")) {
-					// procedure(msg);
+				if (msg.contains("#mem_")) {
+					procedure(msg);
 				} else if (msg.contains("#log_")) {
 					procedure(msg);
 					pln("대충 로그 창에 띄워진다는 글");
@@ -136,6 +157,9 @@ class StuClient extends Thread {
 				} else if (msg.contains("#judge_")) {
 					procedure(msg);
 					pln("대충 누가 승리했다는 글");
+				} else if(msg.contains("#end_")) {
+					procedure(msg);
+					pln("게임이 끝나따");
 				} else {
 					mf.jta2.append(msg + "\n");
 					mf.jta2.setCaretPosition(mf.jta2.getDocument().getLength());
