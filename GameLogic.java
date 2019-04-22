@@ -1,10 +1,11 @@
 
-import java.io.*; 
+import java.io.*;
 import java.util.*;
 
-class GameLogic {
+class GameLogic{
 
-	String[] strs = new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15","16", "17", "18", "19", "20" };
+	String[] strs = new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15",
+			"16", "17", "18", "19", "20" };
 	Random r = new Random();
 	int tile, price, userCnt, win;
 	TreeSet<String> ts;
@@ -12,26 +13,26 @@ class GameLogic {
 	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	int[] powers, card1, card2;
 	String cardMsg;
-	StuServer sts;	
+	StuServer sts;
 	StuCM scm;
-	
-	GameLogic(StuServer sts,int size) {	
+
+	GameLogic(StuServer sts, int size) {
 		this.sts = sts;
-		scm = new StuCM(sts);	
-		userCnt =size;
-	}	
+		scm = new StuCM(sts);
+		userCnt = size;
+	}
 
 	void cntUser() {
-		try {			
-			sts = new StuServer();			
+		try {
+			sts = new StuServer();
 			roll(userCnt);
 		} catch (NumberFormatException nfe) {
 			pln("정수 만 입력하세요." + nfe.getMessage());
 			cntUser();// 재귀 호출
-		} 
+		}
 	}
 
-	void roll(int userCnt ) {
+	void roll(int userCnt) {
 		this.userCnt = userCnt;
 		ts = new TreeSet<String>();
 		hm = new HashMap<Integer, String>();
@@ -50,59 +51,59 @@ class GameLogic {
 		play();
 	}
 
-	void play() {//패돌리기 메소드      
-	      card1 = new int[userCnt];
-	      card2 =new int[userCnt];
-	      
-	      for (int i=0; i < userCnt; i++) { // 유저 수 패 2장 순차 돌림
-	          card1[i] = Integer.parseInt(hm.get(i)); // 첫패	         
-	          cardMsg = hm.get(i);
-	          scm.broadcast("#card1_"+cardMsg);
-	      }
-	      for(int j=0;j<userCnt;j++) {
-	          card2[j] = Integer.parseInt(hm.get(userCnt + j)); // 두번째 패
-	          cardMsg = hm.get(userCnt + j);
-	          scm.broadcast("#card2_"+cardMsg);
-	      }
-	      for(int k=0;k<userCnt;k++) {
-	         p(card1[k] + " | " + card2[k] + ">>");
-	         powers[k] = cardTree(card1[k], card2[k]); // 파워 포인트 return
-	         if (win < powers[k])
-	            win = powers[k];// 가장 큰 수 저장
-	      }
-	      if (win == 26 || win == 16) {
-	         reGame();
-	      }
-	      judge();
-	   }
+	void play() {// 패돌리기 메소드
+		card1 = new int[userCnt];
+		card2 = new int[userCnt];
+		for (int i = 0; i < userCnt; i++) { // 유저 수 패 2장 순차 돌림
+			card1[i] = Integer.parseInt(hm.get(i)); // 첫패
+			cardMsg = hm.get(i);
+			scm.broadcast("#card1_" + cardMsg);
+		}
+		for (int j = 0; j < userCnt; j++) {
+			card2[j] = Integer.parseInt(hm.get(userCnt + j)); // 두번째 패
+			cardMsg = hm.get(userCnt + j);
+			scm.broadcast("#card2_" + cardMsg);
+		}
+		for (int k = 0; k < userCnt; k++) {
+			p(card1[k] + " | " + card2[k] + ">>");
+			powers[k] = cardTree(card1[k], card2[k]); // 파워 포인트 return
+			if (win < powers[k])
+				win = powers[k];// 가장 큰 수 저장
+		}
+		if (win == 26 || win == 16) {
+			reGame();
+		}
+		judge();
+	}
 
 	int judge() { // 공동 우승 경우 처리 필요 // 승리판별 메소드
-		int draw =0;	
+		int draw = 0;
 		int msg = 0;
 		for (int i = 0; i < userCnt; i++) { // 승리 판별
 			if (powers[i] == win) {
 				pln("user" + (i + 1) + " 승리");
-				scm.broadcast("#judge_자리 "+i+" 승리");
+				scm.broadcast("#judge_자리 " + i + " 승리");
 				draw++;
 				msg = i;
 			}
 		}
-		if(draw>1) {
-			pln("무 승 부"+draw+"명");			
+		if (draw > 1) {
+			pln("무 승 부" + draw + "명");
 			roll(draw);
 		}
 		return msg;
 	}
+
 	void reGame() { // 다시 한판
 		pln("묻고 더블로 가!");
 		win = 0;
 		for (int j = 0; j < userCnt; j++) { // 파워 포인트 배열 초기화
-			powers[j] = 0;		
-		}		
+			powers[j] = 0;
+		}
 		roll(userCnt);
 	}
 
-	int cardTree(int card1, int card2) { //족보
+	int cardTree(int card1, int card2) { // 족보
 		int cardSub = card1 - card2;
 		int cardAdd = card1 + card2;
 		int rest = cardAdd % 10;
@@ -204,16 +205,18 @@ class GameLogic {
 		else if (card1 == 4 && card2 == 7) {
 			pln("암 행 어 사");
 			scm.broadcast("#power_암 행 어 사");
-			if(win>80)power=99;
-			else power=1;
-		}
-		else if (card1 == 3 && card2 == 7) {
-			pln("땡 잡 이");			
+			if (win > 80)
+				power = 99;
+			else
+				power = 1;
+		} else if (card1 == 3 && card2 == 7) {
+			pln("땡 잡 이");
 			scm.broadcast("#power_땡 잡 이");
-			if(win<26&&win>16)power=40;
-			else power =0;
-		}
-		else if (card1 == 4 && card2 == 9) {
+			if (win < 26 && win > 16)
+				power = 40;
+			else
+				power = 0;
+		} else if (card1 == 4 && card2 == 9) {
 			pln("멍 텅 구 리 사 구");
 			scm.broadcast("#power_멍 텅 구 리 사 구");
 			power = 26;

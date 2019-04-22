@@ -89,19 +89,19 @@ class StuServer extends Thread {
 				if (re.ready == true) readyCount++;
 			}
 			//레디정보 브로드캐스팅
-			cm.broadcast(cli.id + "님이 준비 완료되었습니다! ( 준비 인원 " + readyCount + "/" + cv.size() + "명 )");
+			cm.broadcast("log",cli.id + "님이 준비 완료되었습니다! ( 준비 인원 " + readyCount + "/" + cv.size() + "명 )");
 			pln(cli.id + "님이 준비 완료되었습니다. ( 준비 인원 " + readyCount + "/" + cv.size() + "명 )");
 		}
 
 		//게임을 시작할 수 있는 조건 확인
 		if (cv.size() < 2) {
-			cm.broadcast("2명 이상의 플레이어가 있어야 게임이 시작됩니다.");
+			cm.broadcast("log","2명 이상의 플레이어가 있어야 게임이 시작됩니다.");
 			pln("2명 이상의 플레이어가 있어야 게임이 시작됩니다.");
 		} else if (cv.size() >= 2 & cv.size() < 5) {
 			//[레디수 = 사람수]일 때, 게임 시작
 			if (readyCount == cv.size() & readyCount >= 2) {
 				setStop(false);
-				cm.broadcast("게임을 시작합니다");
+				cm.broadcast("log","게임을 시작합니다");
 				pln("게임을 시작합니다.");
 				cm.broadcast("mem", "게임참가 멤버정보 전달");	
 				gl = new GameLogic(this, cv.size());
@@ -112,7 +112,7 @@ class StuServer extends Thread {
 					re.ready = false;
 				}
 			} else {
-				cm.broadcast("참가 플레이어 모두가 레디를 해야 게임이 시작됩니다.");
+				cm.broadcast("log","참가 플레이어 모두가 레디를 해야 게임이 시작됩니다.");
 				pln("참가 플레이어 모두가 레디를 해야 게임이 시작됩니다.");
 			}
 		}

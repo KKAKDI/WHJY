@@ -6,12 +6,12 @@ import java.util.*;
 import javax.swing.*;
 
 class StuClient extends Thread {
-	//서버정보
+	// 서버정보
 	String ip;
 	Socket s;
 	int port = 3524;
 
-	//게임 참가 멤버정보
+	// 게임 참가 멤버정보
 	String id;
 	Vector<String> scs = new Vector<String>();
 
@@ -47,12 +47,12 @@ class StuClient extends Thread {
 
 			mf = new MainFrame();
 			mf.cliIN();
-			mf.jta1.append("서버와 연결되었습니다.\n"); // 연결button
-			mf.jta1.setCaretPosition(mf.jta1.getDocument().getLength());
+			protocol("#log_서버와 연결되었습니다."); // 연결button
 
 			name();
+		
 			t1.start();
-
+			idMach();
 		} catch (UnknownHostException uhe) {
 			pln("해당 서버가 존재하지 않습니다.");
 			connect();
@@ -72,61 +72,73 @@ class StuClient extends Thread {
 			if (id.length() == 0)
 				id = "User";
 			dos.writeUTF(id);
-			dos.flush();		
+			dos.flush();
+			mf.jbub4.setText(id);
 		} catch (IOException ie) {
 		}
-
 	}
 
-	//프로토콜에 따라 메소드 실행
-	void procedure(String msg) {
+	// 프로토콜에 따라 메소드 실행
+	void protocol(String msg) {
 		String items[] = msg.split("_");
-		if(i>3) i=0;
-	
-		//첫번째 패 선택
-		if (items[0].equals("#card1")) {			
+		if (i > 3)
+			i = 0;
+		// 첫번째 패 선택
+		if (items[0].equals("#card1")) {
 			cards1[i] = Integer.parseInt(items[1]);
-			pln(""+cards1[i]);
-			mf.jbp7.setIcon(mf.cardMach(cards1[i]));
+			pln("" + cards1[i]);
+			// mf.jbp7.setIcon(mf.cardMach(cards1[i]));
 			i++;
-		
-		//두번째 패 선택
-		} else if (items[0].equals("#card2")) {			
-			cards2[i] = Integer.parseInt(items[1]); 
-			pln(""+cards2[i]);
-			mf.jbp8.setIcon(mf.cardMach(cards2[i]));
+			// 두번째 패 선택
+		} else if (items[0].equals("#card2")) {
+			cards2[i] = Integer.parseInt(items[1]);
+			pln("" + cards2[i]);
+			// mf.jbp8.setIcon(mf.cardMach(cards2[i]));
 			i++;
-		
-		//족보확인
+			// 족보확인
 		} else if (items[0].equals("#power")) {
-		
-		//승패확인
+			pln("족 보");
+			// 승패확인
 		} else if (items[0].equals("#judge")) {
-		
-		//로그
+			pln("승 리");
+			// 로그
 		} else if (items[0].equals("#log")) {
-
-		//게임참가 유저리스트 및 순서 저장
-		} else if(items[0].equals("#mem")) {	
+			mf.jta1.append(items[1] + "\n");
+			mf.jta1.setCaretPosition(mf.jta1.getDocument().getLength());
+			// 게임참가 유저리스트 및 순서 저장
+		} else if (items[0].equals("#mem")) {
 			String memInfo[] = items[1].split("//");
 			int memCount = Integer.parseInt(memInfo[0]);
-			for(int j = 1; j<(memCount+1); j++){
-				scs.add(memInfo[j]);	
-				
-			}
-			//idMach();
-		//게임참가 유저리스트 초기화
-		} else if(items[0].equals("#end")) {	
+			for (int j = 1; j < (memCount + 1); j++) {
+				scs.add(memInfo[j]);
+			}			
+			// 게임참가 유저리스트 초기화
+		} else if (items[0].equals("#end")) {
 			scs.removeAllElements();
-
 		} else {
-			pln("존재하지 않는 프로토콜입니다");
+			pln("존재하지 않는 프로토콜입니다" + msg);
 		}
 	}
-	
+	//게임시작 신호 필요
 	void idMach() {
-		for(int i=0;i<scs.size();i++) {
-			pln(scs.get(i));
+		try {
+			for (int k = 0; k < scs.size();k++) {
+				if (id == scs.get(k)) {
+					// mf.jbub4.setText(scs.get(j));
+					Thread.sleep(500);
+					mf.jbp7.setIcon(mf.cardMach(cards1[k]));
+					Thread.sleep(500);
+					mf.jbp8.setIcon(mf.cardMach(cards2[k]));
+
+				} else {
+					Thread.sleep(500);
+					mf.jbp5.setIcon(mf.cardMach(cards1[k]));
+					Thread.sleep(500);
+					mf.jbp6.setIcon(mf.cardMach(cards2[k]));
+				}
+			}
+		} catch (Exception e) {
+			pln(e.getMessage());
 		}
 	}
 
@@ -139,26 +151,9 @@ class StuClient extends Thread {
 			while (true) {
 				String msg = dis.readUTF();
 				// 순서 판별
-				if (msg.contains("#mem_")) {
-					procedure(msg);
-				} else if (msg.contains("#log_")) {
-					procedure(msg);
-					pln("대충 로그 창에 띄워진다는 글");
-				} else if (msg.contains("#card1_")) {
-					procedure(msg);
-					pln("대충 자리 카드1 이라는 글");
-				} else if (msg.contains("#card2_")) {
-					procedure(msg);
-					pln("대충 자리 카드2 이라는 글");
-				} else if (msg.contains("#power_")) {
-					procedure(msg);
-					pln("대충 족보순위 라는 글");
-				} else if (msg.contains("#judge_")) {
-					procedure(msg);
-					pln("대충 누가 승리했다는 글");
-				} else if(msg.contains("#end_")) {
-					procedure(msg);
-					pln("게임이 끝나따");
+				if (msg.contains("#mem_") || msg.contains("#log_") || msg.contains("#card1_") || msg.contains("#card2_")
+						|| msg.contains("#power_") || msg.contains("#judge_") || msg.contains("#end_")) {
+					protocol(msg);
 				} else {
 					mf.jta2.append(msg + "\n");
 					mf.jta2.setCaretPosition(mf.jta2.getDocument().getLength());
@@ -258,37 +253,57 @@ class StuClient extends Thread {
 
 		ImageIcon i100 = new ImageIcon("./image/완성/화투이미지/background.png");
 
-		ImageIcon cardMach(int cards) {			
+		ImageIcon cardMach(int cards) {
 			switch (cards) {
-				case 1 : return i1;
-				case 2 : return i2;
-				case 3 : return i3;
-				case 4 : return i4;
-				case 5 : return i5;
-				case 6 : return i6;
-				case 7 : return i7;
-				case 8 : return i8;
-				case 9 : return i9;
-				case 10 : return i10;
-				case 11 : return i11;
-				case 12 : return i12;
-				case 13 : return i13;
-				case 14 : return i14;
-				case 15 : return i15;
-				case 16 : return i16;
-				case 17 : return i17;
-				case 18 : return i18;
-				case 19 : return i19;
-				case 20 : return i20;
+			case 1:
+				return i1;
+			case 2:
+				return i2;
+			case 3:
+				return i3;
+			case 4:
+				return i4;
+			case 5:
+				return i5;
+			case 6:
+				return i6;
+			case 7:
+				return i7;
+			case 8:
+				return i8;
+			case 9:
+				return i9;
+			case 10:
+				return i10;
+			case 11:
+				return i11;
+			case 12:
+				return i12;
+			case 13:
+				return i13;
+			case 14:
+				return i14;
+			case 15:
+				return i15;
+			case 16:
+				return i16;
+			case 17:
+				return i17;
+			case 18:
+				return i18;
+			case 19:
+				return i19;
+			case 20:
+				return i20;
 			}
-			return i100;			
+			return i100;
 		}
-		
+
 		void cliIN() {
 			Color k = new Color(80, 120, 32);
 			cm1 = getContentPane();
 			setLayout(new GridLayout(3, 3));
-			
+
 			cm1.add(c1p1 = new JPanel());
 			cm1.add(c1p2 = new JPanel());
 			cm1.add(c1p3 = new JPanel());
@@ -309,7 +324,7 @@ class StuClient extends Thread {
 			c1p8.setLayout(new GridLayout(1, 3));
 			c1p9.setLayout(new FlowLayout());
 
-			//배경색 지정
+			// 배경색 지정
 			cm1.setBackground(k);
 			c1p1.setBackground(k);
 			c1p2.setBackground(k);
@@ -321,11 +336,11 @@ class StuClient extends Thread {
 			c1p8.setBackground(k);
 			c1p9.setBackground(k);
 
-			//로고,시간 패널
+			// 로고,시간 패널
 			c1p1.add(jli5 = new JLabel(i44));
 			c1p1.add(mb1 = new JButton());
 
-			//유저2 패널
+			// 유저2 패널
 			c1p2.add(c2p2 = new JPanel());
 			c2p2.setLayout(new BoxLayout(c2p2, BoxLayout.Y_AXIS));
 			c2p2.setBackground(k);
@@ -335,14 +350,14 @@ class StuClient extends Thread {
 			c1p2.add(jlp1 = new JLabel(i100));
 			c1p2.add(jlp2 = new JLabel(i100));
 
-			//시스템로그 패널
-			jta1 = new JTextArea(11, 32);
+			// 시스템로그 패널
+			jta1 = new JTextArea(11, 31);
 			JScrollPane jsp1 = new JScrollPane(jta1, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 					JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			jta1.setBackground(k);
 			c1p3.add(jsp1);
 
-			//유저1 패널
+			// 유저1 패널
 			c1p4.add(c2p4 = new JPanel());
 			c2p4.setLayout(new GridLayout(3, 1));
 			c2p4.setBackground(k);
@@ -352,7 +367,7 @@ class StuClient extends Thread {
 			c1p4.add(jlp3 = new JLabel(i100));
 			c1p4.add(jlp4 = new JLabel(i100));
 
-			//중앙 패널
+			// 중앙 패널
 			c1p5.add(jbc1 = new JLabel());
 			c1p5.add(jbc2 = new JLabel());
 			c1p5.add(jbc3 = new JLabel());
@@ -363,7 +378,7 @@ class StuClient extends Thread {
 			c1p5.add(jbc8 = new JLabel());
 			c1p5.add(jbc9 = new JLabel());
 
-			//유저3 패널
+			// 유저3 패널
 			c1p6.add(c2p6 = new JPanel());
 			c2p6.setLayout(new GridLayout(3, 1));
 			c2p6.setBackground(k);
@@ -373,7 +388,7 @@ class StuClient extends Thread {
 			c1p6.add(jlp5 = new JLabel(i100));
 			c1p6.add(jlp6 = new JLabel(i100));
 
-			//자신의 족보,배팅 패널
+			// 자신의 족보,배팅 패널
 			c1p7.add(mb1 = new JButton());
 			c1p7.add(c2p7 = new JPanel());
 			c2p7.setLayout(new GridLayout(4, 1));
@@ -383,26 +398,26 @@ class StuClient extends Thread {
 			c2p7.add(jbb3 = new JButton(i42));
 			c2p7.add(jbb4 = new JButton(i43));
 
-			//자신의 패널
+			// 자신의 패널
 			c1p8.add(jbp7 = new JButton());
 			c1p8.add(jbp8 = new JButton());
 			c1p8.add(c2p8 = new JPanel());
-			c2p8.setLayout(new GridLayout(3,1));
+			c2p8.setLayout(new GridLayout(3, 1));
 			c2p8.setBackground(k);
 			c2p8.add(jli4 = new JLabel(i33)); // 2;
 			c2p8.add(jbub4 = new JButton());
 			c2p8.add(jbj4 = new JButton());
 
-			//채팅 패널
+			// 채팅 패널
 			c1p9.add(jwl4 = new JLabel(" 채팅입력 : "));
 			c1p9.add(jtf1 = new JTextField(25));
-			jta2 = new JTextArea(10, 32);
+			jta2 = new JTextArea(10, 31);
 			JScrollPane jsp2 = new JScrollPane(jta2, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 					JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			c1p9.add(jsp2);
 			jta2.setBackground(k);
 			jta2.setEnabled(false);
-
+			jta1.setEnabled(false);
 			jtf1.addActionListener(this);
 
 			CliUI();
