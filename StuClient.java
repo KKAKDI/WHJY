@@ -6,20 +6,25 @@ import java.util.*;
 import javax.swing.*;
 
 class StuClient extends Thread {
+	//서버정보
 	String ip;
-	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	Socket s;
+	int port = 3524;
+
+	//게임 참가 멤버정보
+	String id;
+	Vector<String> scs = new Vector<String>();
+
+	ClientLoginUI clui;
+	MainFrame mf;
+	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	InputStream is;
 	DataInputStream dis;
 	OutputStream os;
 	DataOutputStream dos;
-	String id;
-	boolean rop = false;
-	int port = 3524;
-	ClientLoginUI clui;
-	MainFrame mf;
 	Thread t1;
-	Vector<String> scs = new Vector<String>();
+	int cards1[] = new int[4];
+	int cards2[] = new int[4];
 
 	StuClient(ClientLoginUI clui) {
 		this.clui = clui;
@@ -73,34 +78,50 @@ class StuClient extends Thread {
 
 	}
 
-//	void choice() { // 패 선택
-//	int i = 1;
-//	int j = 2;
-//	String str = (i != j) ? "패1" : "패2";
-//}
-	void procedure(String msg) {// 클라이언트 순서
+	//프로토콜에 따라 메소드 실행
+	void procedure(String msg) {
 		String items[] = msg.split("_");
-
+		
+		int i =0;
+		//첫번째 패 선택
 		if (items[0].equals("#card1")) {
-			pln("대충 card1 값이 잘 들어와있다는 뜻");
-		} else if (items[0].equals("#card1")) {
-
+			pln(items[1]);
+			cards1[i] = Integer.parseInt(items[1]);
+			mf.jbp7.setIcon(mf.cardMach(cards1[i]));
+			i++;
+		
+		//두번째 패 선택
 		} else if (items[0].equals("#card2")) {
-
+			pln(items[1]);
+			cards2[i] = Integer.parseInt(items[1]); 
+			mf.jbp8.setIcon(mf.cardMach(cards2[i]));
+			i++;
+		
+		//족보확인
 		} else if (items[0].equals("#power")) {
-
+		
+		//승패확인
 		} else if (items[0].equals("#judge")) {
-
+		
+		//로그
 		} else if (items[0].equals("#log")) {
+
+		//게임참가 유저리스트 및 순서 저장
+		} else if(items[0].equals("#mem")) {	
+			String memInfo[] = items[1].split("//");
+			int memCount = Integer.parseInt(memInfo[0]);
+			for(int j = 1; j<(memCount+1); j++){
+				scs.add(memInfo[j]);	
+				pln(""+memInfo[j]);
+			}
+		
+		//게임참가 유저리스트 초기화
+		} else if(items[0].equals("#end")) {	
+			scs.removeAllElements();
 
 		} else {
 			pln("존재하지 않는 프로토콜입니다");
 		}
-//	int a = Integer.parseInt(items[1]);
-//
-//	for (int i = 2; i < (a + 2); i++) {
-//		scs.add(items[i]);
-//	}
 	}
 
 	public void run() { // 읽기
@@ -112,8 +133,8 @@ class StuClient extends Thread {
 			while (true) {
 				String msg = dis.readUTF();
 				// 순서 판별
-				if (msg.contains("@a_r_b_o_k")) {
-					// procedure(msg);
+				if (msg.contains("#mem_")) {
+					procedure(msg);
 				} else if (msg.contains("#log_")) {
 					procedure(msg);
 					pln("대충 로그 창에 띄워진다는 글");
@@ -129,11 +150,13 @@ class StuClient extends Thread {
 				} else if (msg.contains("#judge_")) {
 					procedure(msg);
 					pln("대충 누가 승리했다는 글");
+				} else if(msg.contains("#end_")) {
+					procedure(msg);
+					pln("게임이 끝나따");
 				} else {
 					mf.jta2.append(msg + "\n");
 					mf.jta2.setCaretPosition(mf.jta2.getDocument().getLength());
 				}
-				// choice();
 			}
 		} catch (IOException ie) {
 			mf.jta1.append("서버가 다운됐습니다. \n 3초 후에 종료됩니다.\n");
@@ -252,6 +275,7 @@ class StuClient extends Thread {
 			c1p7.setLayout(new GridLayout(1, 2));
 			c1p8.setLayout(new GridLayout(1, 3));
 			c1p9.setLayout(new FlowLayout());
+
 			//배경색 지정
 			cm1.setBackground(k);
 			c1p1.setBackground(k);
@@ -263,9 +287,11 @@ class StuClient extends Thread {
 			c1p7.setBackground(k);
 			c1p8.setBackground(k);
 			c1p9.setBackground(k);
+
 			//로고,시간 패널
 			c1p1.add(jli5 = new JLabel(i44));
 			c1p1.add(mb1 = new JButton());
+
 			//유저2 패널
 			c1p2.add(c2p2 = new JPanel());
 			c2p2.setLayout(new BoxLayout(c2p2, BoxLayout.Y_AXIS));
@@ -275,12 +301,14 @@ class StuClient extends Thread {
 			c2p2.add(jbj2 = new JButton(i40));
 			c1p2.add(jbp3 = new JButton());
 			c1p2.add(jbp4 = new JButton());
+
 			//시스템로그 패널
 			jta1 = new JTextArea(11, 32);
 			JScrollPane jsp1 = new JScrollPane(jta1, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 					JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			jta1.setBackground(k);
 			c1p3.add(jsp1);
+
 			//유저1 패널
 			c1p4.add(c2p4 = new JPanel());
 			c2p4.setLayout(new GridLayout(3, 1));
@@ -290,6 +318,7 @@ class StuClient extends Thread {
 			c2p4.add(jbj1 = new JButton());
 			c1p4.add(jbp1 = new JButton());
 			c1p4.add(jbj2 = new JButton());
+
 			//중앙 패널
 			c1p5.add(jbc1 = new JLabel());
 			c1p5.add(jbc2 = new JLabel());
@@ -300,6 +329,7 @@ class StuClient extends Thread {
 			c1p5.add(jbc7 = new JLabel());
 			c1p5.add(jbc8 = new JLabel());
 			c1p5.add(jbc9 = new JLabel());
+
 			//유저3 패널
 			c1p6.add(c2p6 = new JPanel());
 			c2p6.setLayout(new GridLayout(3, 1));
@@ -309,6 +339,7 @@ class StuClient extends Thread {
 			c2p6.add(jbj3 = new JButton());
 			c1p6.add(jbp5 = new JButton());
 			c1p6.add(jbp6 = new JButton());
+
 			//자신의 족보,배팅 패널
 			c1p7.add(mb1 = new JButton());
 			c1p7.add(c2p7 = new JPanel());
@@ -318,6 +349,7 @@ class StuClient extends Thread {
 			c2p7.add(jbb2 = new JButton(i41));
 			c2p7.add(jbb3 = new JButton(i42));
 			c2p7.add(jbb4 = new JButton(i43));
+
 			//자신의 패널
 			c1p8.add(mb1 = new JButton());
 			c1p8.add(mb1 = new JButton());
@@ -327,6 +359,7 @@ class StuClient extends Thread {
 			c2p8.add(jli4 = new JLabel(i33)); // 2;
 			c2p8.add(jbub4 = new JButton());
 			c2p8.add(jbj4 = new JButton());
+
 			//채팅 패널
 			c1p9.add(jwl4 = new JLabel(" 채팅입력 : "));
 			c1p9.add(jtf1 = new JTextField(25));
