@@ -23,8 +23,8 @@ class StuClient extends Thread {
 	OutputStream os;
 	DataOutputStream dos;
 	Thread t1;
-	int cards1[] = new int[4];
-	int cards2[] = new int[4];
+	int cards1[] =new int[4];
+	int cards2[] =new int[4];
 	int cnt1, cnt2;
 
 	StuClient(ClientLoginUI clui) {
@@ -79,10 +79,6 @@ class StuClient extends Thread {
 	// 프로토콜에 따라 메소드 실행
 	void protocol(String msg) {
 		String items[] = msg.split("_");
-		if (cnt1 > 3 || cnt2 > 3) {
-			cnt1 = 0;
-			cnt2 = 0;
-		}
 		// 첫번째 패 선택
 		if (items[0].equals("#card1")) {
 			cards1[cnt1] = Integer.parseInt(items[1]);
@@ -110,7 +106,7 @@ class StuClient extends Thread {
 			String memInfo[] = items[1].split("//");
 			int memCount = Integer.parseInt(memInfo[0]);
 			for (int j = 1; j < (memCount + 1); j++) {
-				scs.add(memInfo[j]);
+				scs.add(memInfo[j]);			
 			}
 			// 게임 시작시 패 뿌리기 시작
 		} else if (items[0].equals("#start")) {
@@ -120,12 +116,14 @@ class StuClient extends Thread {
 		}else if(items[0].equals("#batting")) {
 			pln("배팅시작 올 스탑");
 			//배팅 기능
-//			try {
-//				dos.writeUTF("dhgkaak");
-//			} catch (IOException e) {
-//			}
+			try {
+				dos.writeUTF("dhgkaak");
+			} catch (IOException e) {
+			}
 		}else if (items[0].equals("#end")) {
-			for(int i = 0; i<cards1.length;i++) {
+			cnt1=0;
+			cnt2=0;
+			for(int i = 0; i<cards1.length;i++) {			
 				cards1[i]=0;
 				cards2[i]=0;
 				mf.jlp1.setIcon(mf.i100);
@@ -149,8 +147,10 @@ class StuClient extends Thread {
 				if (id.equals(scs.get(i))) {		
 					Thread.sleep(300);
 					mf.jbp7.setIcon(mf.cardMach(cards1[i]));
+					pln(""+mf.cardMach(cards1[i]));
 					Thread.sleep(300);
 					mf.jbp8.setIcon(mf.cardMach(cards2[i]));
+					pln(""+mf.cardMach(cards2[i]));
 					Thread.sleep(300);
 				} else { //그렇지 않은경우 12시에 패
 					pln(scs.get(i));

@@ -97,7 +97,7 @@ class StuServer extends Thread {
 		if (cv.size() < 2) {
 			cm.broadcast("log","2명 이상의 플레이어가 있어야 게임이 시작됩니다.");
 			pln("2명 이상의 플레이어가 있어야 게임이 시작됩니다.");
-		} else if (cv.size() >= 2 & cv.size() < 5) {
+		} else if (cv.size() >= 2 && cv.size() < 5) {
 			//[레디수 = 사람수]일 때, 게임 시작
 			if (readyCount == cv.size() & readyCount >= 2) {
 				setStop(false);
