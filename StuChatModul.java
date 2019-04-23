@@ -174,7 +174,7 @@ class StuCM extends Thread {
 					token = token + size;
 
 					for(StuCM gmem : sts.cv){
-						token = token + t + "(" + gmem.id + "," + gmem.ready + ")";
+						token = token + t  + gmem.id + t + gmem.ready;
 					}
 					modul.dos.writeUTF(token);
 					//현재 게임로직에서 수행 중

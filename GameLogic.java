@@ -202,25 +202,25 @@ class GameLogic{
 			power = 10;
 		}
 		// 특수 족보
-		else if (card1 == 4 && card2 == 7) {
+		else if ((card1 == 4||card1==7) && (card2 == 7||card2==4)) {
 			pln("암 행 어 사");
 			scm.broadcast("#power_암 행 어 사");
 			if (win > 80)
 				power = 99;
 			else
 				power = 1;
-		} else if (card1 == 3 && card2 == 7) {
+		} else if ((card1 == 3 ||card1==7)&& (card2 == 7||card2==4)) {
 			pln("땡 잡 이");
 			scm.broadcast("#power_땡 잡 이");
 			if (win < 26 && win > 16)
 				power = 40;
 			else
 				power = 0;
-		} else if (card1 == 4 && card2 == 9) {
+		} else if ((card1 == 4||card1==9) && (card2 == 9||card2==4)) {
 			pln("멍 텅 구 리 사 구");
 			scm.broadcast("#power_멍 텅 구 리 사 구");
 			power = 26;
-		} else if ((card1 == 4 && card2 == 19) || (card1 == 14 && card2 == 9)) {
+		} else if ((card1 == 4 && card2 == 19) || (card1 == 14 && card2 == 9)||(card1 == 14 && card2 == 19)) {
 			pln("사 구 파 토");
 			scm.broadcast("#power_사 구 파 토");
 			power = 16;

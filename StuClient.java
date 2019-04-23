@@ -13,7 +13,8 @@ class StuClient extends Thread {
 
 	// 게임 참가 멤버정보
 	String id;
-	Vector<String> scs = new Vector<String>();
+	Vector<String> scs = new Vector<String>();	
+	HashMap<String, Object> hm = new HashMap<String, Object>();
 
 	ClientLoginUI clui;
 	MainFrame mf;
@@ -23,9 +24,11 @@ class StuClient extends Thread {
 	OutputStream os;
 	DataOutputStream dos;
 	Thread t1;
-	int cards1[] =new int[4];
-	int cards2[] =new int[4];
+	int cards1[] = new int[4];
+	int cards2[] = new int[4];
 	int cnt1, cnt2;
+	Object user1[] = new Object[4];
+	Object user2[] = new Object[4];
 
 	StuClient(ClientLoginUI clui) {
 		this.clui = clui;
@@ -77,6 +80,7 @@ class StuClient extends Thread {
 	}
 
 	// 프로토콜에 따라 메소드 실행
+	
 	void protocol(String msg) {
 		String items[] = msg.split("_");
 		// 첫번째 패 선택
@@ -103,29 +107,39 @@ class StuClient extends Thread {
 			mf.jta1.setCaretPosition(mf.jta1.getDocument().getLength());
 			// 게임참가 유저리스트 및 순서 저장
 		} else if (items[0].equals("#mem")) {
+			scs.removeAllElements();
+			//구현하기 여기부터 2019.4.23
+			for(int i=0;i<hm.size();i++) {
+				hm.remove();
+			}
 			String memInfo[] = items[1].split("//");
 			int memCount = Integer.parseInt(memInfo[0]);
 			for (int j = 1; j < (memCount + 1); j++) {
-				scs.add(memInfo[j]);			
+				if((memCount+1)%2==1) {
+					scs.add(memInfo[j]);
+					hm.put(memInfo[j], (Object) memInfo[j + 1]);					
+				}				
 			}
+			pln(""+hm.get(0));
+			pln(""+hm.get(1));
 			// 게임 시작시 패 뿌리기 시작
 		} else if (items[0].equals("#start")) {
 			pln("시작");
 			idMach();
 			// 게임참가 유저리스트 초기화
-		}else if(items[0].equals("#batting")) {
+		} else if (items[0].equals("#batting")) {
 			pln("배팅시작 올 스탑");
-			//배팅 기능
+			// 배팅 기능
 //			try {
 //				dos.writeUTF("dhgkaak");
 //			} catch (IOException e) {
 //			}
-		}else if (items[0].equals("#end")) {
-			cnt1=0;
-			cnt2=0;
-			for(int i = 0; i<cards1.length;i++) {			
-				cards1[i]=0;
-				cards2[i]=0;
+		} else if (items[0].equals("#end")) {
+			cnt1 = 0;
+			cnt2 = 0;
+			for (int i = 0; i < cards1.length; i++) {
+				cards1[i] = 0;
+				cards2[i] = 0;
 				mf.jlp1.setIcon(mf.i100);
 				mf.jlp2.setIcon(mf.i100);
 				mf.jlp3.setIcon(mf.i100);
@@ -139,11 +153,8 @@ class StuClient extends Thread {
 		}
 	}
 
-
 	void idMach() {		
-		try {
-			Object user1[] = new Object[4];
-			Object user2[] = new Object[4];
+		try {			
 			user1[0] = mf.jlp3;
 			user2[0] = mf.jlp4;
 			user1[1]	=	mf.jlp1;
@@ -152,24 +163,48 @@ class StuClient extends Thread {
 			user2[2]	=	mf.jlp6;
 			user1[3] = mf.jlp7;
 			user2[3] = mf.jbp8;
+			
+			String user1ID = scs.get(0);
+			String user2ID = scs.get(1);
+			String user3ID = scs.get(2);
+			String user4ID = scs.get(3);
 			//내 아이디와 같을경우 6시에 패
 			for (int i = 0; i < scs.size(); i++) {
 				if (id.equals(scs.get(i))) {		
 					Thread.sleep(300);
-					mf.jlp7.setIcon(mf.cardMach(cards1[i]));
-					pln(""+mf.cardMach(cards1[i]));
+					((JLabel)user1[3]).setIcon(mf.cardMach(cards1[i]));					
 					Thread.sleep(300);
-					mf.jbp8.setIcon(mf.cardMach(cards2[i]));
-					pln(""+mf.cardMach(cards2[i]));
+					((JLabel)user1[3]).setIcon(mf.cardMach(cards2[i]));				
 					Thread.sleep(300);
-				} else { //그렇지 않은경우 12시에 패					
+				}else if((!id.equals(scs.get(i)))&&user1ID.equals(scs.get(i))) {
+					Thread.sleep(300);
+					((JLabel)user1[0]).setIcon(mf.cardMach(cards1[i]));					
+					Thread.sleep(300);
+					((JLabel)user1[0]).setIcon(mf.cardMach(cards2[i]));				
+					Thread.sleep(300);
+				}else if((!id.equals(scs.get(i)))&&user2ID.equals(scs.get(i))) {
+					Thread.sleep(300);
+					((JLabel)user1[1]).setIcon(mf.cardMach(cards1[i]));					
+					Thread.sleep(300);
+					((JLabel)user1[1]).setIcon(mf.cardMach(cards2[i]));				
+					Thread.sleep(300);
+				} else if((!id.equals(scs.get(i)))&&user3ID.equals(scs.get(i))){ //그렇지 않은경우 12시에 패					
 					pln(scs.get(i));
-					//mf.jbub2.setText(scs.get(i));
 					Thread.sleep(300);
-					((JLabel)user1[i]).setIcon(mf.cardMach(cards1[i]));
+					((JLabel)user1[2]).setIcon(mf.cardMach(cards1[i]));
 					Thread.sleep(300);
-					((JLabel)user2[i]).setIcon(mf.cardMach(cards2[i]));
+					((JLabel)user2[2]).setIcon(mf.cardMach(cards2[i]));
 					Thread.sleep(300);
+				}else if((!id.equals(scs.get(i)))&&user4ID.equals(scs.get(i))) {
+					pln(scs.get(i));
+					Thread.sleep(300);
+					((JLabel)user1[3]).setIcon(mf.cardMach(cards1[i]));
+					Thread.sleep(300);
+					((JLabel)user2[3]).setIcon(mf.cardMach(cards2[i]));
+					Thread.sleep(300);
+				}
+				else {
+					pln("오 류");
 				}
 			}
 			}catch (Exception e) {
@@ -230,6 +265,7 @@ class StuClient extends Thread {
 	void p(String str) {
 		System.out.print(str);
 	}
+
 	// 내부 UI클레스
 	class MainFrame extends JFrame implements ActionListener {
 
@@ -380,20 +416,19 @@ class StuClient extends Thread {
 			cm1.add(c1p6 = new JPanel());
 			cm1.add(c1p7 = new JPanel());
 			cm1.add(c1p8 = new JPanel());
-			//cm1.add(c1p9 = new JPanel());
-			
-			c1p9 = new JPanel()
-			 {
-					{
-						setOpaque(false);
-					}
+			// cm1.add(c1p9 = new JPanel());
 
-					public void paintComponent(Graphics g) {
-						g.drawImage(i52, 0, 0, this);
-						super.paintComponent(g);
-					}
-				};
-				cm1.add(c1p9);
+			c1p9 = new JPanel() {
+				{
+					setOpaque(false);
+				}
+
+				public void paintComponent(Graphics g) {
+					g.drawImage(i52, 0, 0, this);
+					super.paintComponent(g);
+				}
+			};
+			cm1.add(c1p9);
 
 			c1p1.setLayout(new GridLayout(2, 1));
 			c1p2.setLayout(new GridLayout(1, 3));
@@ -446,7 +481,7 @@ class StuClient extends Thread {
 					super.paintComponent(g);
 				}
 			};
-			//jta1.setFont(font1);
+			// jta1.setFont(font1);
 			JScrollPane jsp1 = new JScrollPane(jta1, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 					JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			// jta1.setBackground(k);
@@ -509,7 +544,7 @@ class StuClient extends Thread {
 			c2p8.add(jlb4 = new JLabel(i49));
 
 			// 채팅 패널
-			//	jta2 = new JTextArea(10, 31) {
+			// jta2 = new JTextArea(10, 31) {
 //				{
 //					setOpaque(false);
 //				}
@@ -519,12 +554,12 @@ class StuClient extends Thread {
 //					super.paintComponent(g);
 //				}
 //			};
-			//jta2.setBackground(b);
+			// jta2.setBackground(b);
 			jta2 = new JTextArea(10, 31);
 			JScrollPane jsp2 = new JScrollPane(jta2, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 					JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			c1p9.add(jsp2);
-			//jta2.setOpaque(false);
+			// jta2.setOpaque(false);
 			c1p9.add(jwl4 = new JLabel(" 채팅입력 : "));
 			c1p9.add(jtf1 = new JTextField(25));
 			// jta2.setBackground(k);
@@ -566,7 +601,7 @@ class StuClient extends Thread {
 			} else if (obj == jbb4) {
 			} else if (obj == jbb4) {
 			} else if (obj == jbb4) {
-				
+
 			}
 		}
 	}
@@ -582,7 +617,7 @@ class StuClient extends Thread {
 					// System.out.println(time+"초 남았습니다");
 				} catch (InterruptedException e) {
 				}
-				mf.jli7.setText("   "+time + "sec.");
+				mf.jli7.setText("   " + time + "sec.");
 				time--;
 				// if (time == 0) {
 				// time1.setText("Game Over..."); //시간초과로 다이
