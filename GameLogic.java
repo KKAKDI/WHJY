@@ -176,27 +176,27 @@ class GameLogic{
 			}
 		}
 		// Áß°£ Á·º¸
-		else if ((card1 == 1 || card1 == 11) && (card2 == 2 || card2 == 12)) {
+		else if ((card1 == 1 || card1 == 11||card1 == 2 || card1 == 12) && (card2 == 2 || card2 == 12||card2 == 1 || card2 == 11)) {
 			pln("¾Ë ¸®");
 			scm.broadcast("#power_¾Ë ¸®");
 			power = 15;
-		} else if ((card1 == 1 || card1 == 11) && (card2 == 4 || card2 == 14)) {
+		} else if ((card1 == 1 || card1 == 11||card1 == 4 || card1 == 14) && (card2 == 4 || card2 == 14||card2 == 1 || card2 == 11)) {
 			pln("µ¶ »ç");
 			scm.broadcast("#power_µ¶ »ç");
 			power = 14;
-		} else if ((card1 == 1 || card1 == 11) && (card2 == 9 || card2 == 19)) {
+		} else if ((card1 == 1 || card1 == 11||card1 == 9 || card1 == 19) && (card2 == 9 || card2 == 19|| card2 == 1 || card2 == 11)) {
 			pln("±¸ »æ");
 			scm.broadcast("#power_±¸ »æ");
 			power = 13;
-		} else if ((card1 == 1 || card1 == 11) && (card2 == 10 || card2 == 20)) {
+		} else if ((card1 == 1 || card1 == 11||card1 == 10 || card1 == 20) && (card2 == 10 || card2 == 20||card2 == 1 || card2 == 1)) {
 			pln("Àå »æ");
 			scm.broadcast("#power_Àå »æ");
 			power = 12;
-		} else if ((card1 == 4 || card1 == 14) && (card2 == 10 || card2 == 20)) {
+		} else if ((card1 == 4 || card1 == 14||card1 == 10 || card1 == 20) && (card2 == 10 || card2 == 20||card2 == 4 || card2 == 14)) {
 			pln("Àå »ç");
 			scm.broadcast("#power_Àå »ç");
 			power = 11;
-		} else if ((card1 == 4 || card1 == 14) && (card2 == 6 || card2 == 16)) {
+		} else if ((card1 == 4 || card1 == 14 || card1 == 6 || card1 == 16) && (card2 == 6 || card2 == 16 ||card2 == 4 || card2 == 14)) {
 			pln("¼¼ ·ú");
 			scm.broadcast("#power_¼¼ ·ú");
 			power = 10;

@@ -96,7 +96,7 @@ class StuCM extends Thread {
 			// 사용자가 tpgidak(세향마)라 입력하면 레디취소됨
 		} else if (msg.equals("tpgidak")) {
 			if (sts.cv.size()>=2 & sts.readyCount == sts.cv.size()) {
-				broadcast("게임이 시작되어 레디를 취소할 수 없습니다.");
+				broadcast("log","게임이 시작되어 레디를 취소할 수 없습니다.");
 			}else{
 				if(ready==true){
 					ready = false;
@@ -106,7 +106,10 @@ class StuCM extends Thread {
 					sts.ready4Client(this);
 				}		
 			}
-		}else{
+		}else if(msg.equals("dhgkaak")) {
+			broadcast("end","게임 끝");
+		}
+		else{
 			broadcast(id + " : " + msg);
 			sts.pln(id + " : " + msg);
 		}
@@ -172,12 +175,6 @@ class StuCM extends Thread {
 					}
 					modul.dos.writeUTF(token);
 					//현재 게임로직에서 수행 중
-//				//카드1
-//				}else if(flag.equals("card1")){
-//					modul.dos.writeUTF("#card1_"+msg);
-//				//카드2
-//				}else if(flag.equals("card2")){
-//					modul.dos.writeUTF("#card2_"+msg);
 //				//족보
 //				}else if(flag.equals("power")){
 //					modul.dos.writeUTF("#power_"+msg);
@@ -185,11 +182,11 @@ class StuCM extends Thread {
 //				}else if(flag.equals("judge")){
 //					modul.dos.writeUTF("#judge_"+msg);
 //				//배팅
-//				}else if(flag.equals("batting")){
-//					modul.dos.writeUTF("#batting_"+msg);
-//				//게임끝
-//				}else if(flag.equals("end")){
-//					modul.dos.writeUTF("#end_"+msg);
+				}else if(flag.equals("batting")){
+					modul.dos.writeUTF("#batting_"+msg);
+				//게임끝
+				}else if(flag.equals("end")){
+					modul.dos.writeUTF("#end_"+msg);
 				}else if(flag.equals("start")) { //게임시작 프로토콜
 					modul.dos.writeUTF("#start_"+msg);
 				}

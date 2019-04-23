@@ -108,6 +108,8 @@ class StuServer extends Thread {
 				gl.cntUser();
 				//게임시작 신호
 				cm.broadcast("start","게임 시작");
+				
+				cm.broadcast("batting","배팅 시작");
 				//레디초기화
 				for (StuCM re : cv) {
 					re.ready = false;

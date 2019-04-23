@@ -71,7 +71,7 @@ class StuClient extends Thread {
 				id = "User";
 			dos.writeUTF(id);
 			dos.flush();
-			mf.jbub4.setText(id);
+			//mf.jbub4.setText(id);
 		} catch (IOException ie) {
 		}
 	}
@@ -83,7 +83,6 @@ class StuClient extends Thread {
 			cnt1 = 0;
 			cnt2 = 0;
 		}
-
 		// 첫번째 패 선택
 		if (items[0].equals("#card1")) {
 			cards1[cnt1] = Integer.parseInt(items[1]);
@@ -118,7 +117,24 @@ class StuClient extends Thread {
 			pln("시작");
 			idMach();
 			// 게임참가 유저리스트 초기화
-		} else if (items[0].equals("#end")) {
+		}else if(items[0].equals("#batting")) {
+			pln("배팅시작 올 스탑");
+			//배팅 기능
+//			try {
+//				dos.writeUTF("dhgkaak");
+//			} catch (IOException e) {
+//			}
+		}else if (items[0].equals("#end")) {
+			for(int i = 0; i<cards1.length;i++) {
+				cards1[i]=0;
+				cards2[i]=0;
+				mf.jlp1.setIcon(mf.i100);
+				mf.jlp2.setIcon(mf.i100);
+				mf.jlp3.setIcon(mf.i100);
+				mf.jlp4.setIcon(mf.i100);
+				mf.jbp7.setIcon(mf.i100);
+				mf.jbp8.setIcon(mf.i100);
+			}
 			scs.removeAllElements();
 		} else {
 			pln("존재하지 않는 프로토콜입니다" + msg);
@@ -138,7 +154,7 @@ class StuClient extends Thread {
 					Thread.sleep(300);
 				} else { //그렇지 않은경우 12시에 패
 					pln(scs.get(i));
-					mf.jbub2.setText(scs.get(i));
+					//mf.jbub2.setText(scs.get(i));
 					Thread.sleep(300);
 					mf.jlp1.setIcon(mf.cardMach(cards1[i]));
 					Thread.sleep(300);
@@ -146,7 +162,7 @@ class StuClient extends Thread {
 					Thread.sleep(300);
 				}
 			}
-		} catch (Exception e) {
+			}catch (Exception e) {
 			pln(e.getMessage());
 		}
 	}
@@ -162,7 +178,7 @@ class StuClient extends Thread {
 				// 순서 판별
 				if (msg.contains("#mem_") || msg.contains("#log_") || msg.contains("#card1_") || msg.contains("#card2_")
 						|| msg.contains("#power_") || msg.contains("#judge_") || msg.contains("#end_")
-						|| msg.contains("#start_")) {
+						|| msg.contains("#start_") || msg.contains("#batting_")) {
 					protocol(msg);
 				} else {
 					mf.jta2.append(msg + "\n");
@@ -510,8 +526,7 @@ class StuClient extends Thread {
 		public void run() {
 			int time = 10;
 			while (true) {
-				try {
-					MainFrame mf = new MainFrame();
+				try {					
 					Thread.sleep(1000);
 					//System.out.println(time+"초 남았습니다");
 					} catch (InterruptedException e) {
