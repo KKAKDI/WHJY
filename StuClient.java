@@ -71,7 +71,7 @@ class StuClient extends Thread {
 				id = "User";
 			dos.writeUTF(id);
 			dos.flush();
-			//mf.jbub4.setText(id);
+			mf.jlj4.setText(id);
 		} catch (IOException ie) {
 		}
 	}
@@ -130,7 +130,7 @@ class StuClient extends Thread {
 				mf.jlp2.setIcon(mf.i100);
 				mf.jlp3.setIcon(mf.i100);
 				mf.jlp4.setIcon(mf.i100);
-				mf.jbp7.setIcon(mf.i100);
+				mf.jlp7.setIcon(mf.i100);
 				mf.jbp8.setIcon(mf.i100);
 			}
 			scs.removeAllElements();
@@ -150,13 +150,13 @@ class StuClient extends Thread {
 			user2[1] =	mf.jlp2;
 			user1[2]	= mf.jlp5;
 			user2[2]	=	mf.jlp6;
-			user1[3] = mf.jbp7;
+			user1[3] = mf.jlp7;
 			user2[3] = mf.jbp8;
 			//내 아이디와 같을경우 6시에 패
 			for (int i = 0; i < scs.size(); i++) {
 				if (id.equals(scs.get(i))) {		
 					Thread.sleep(300);
-					mf.jbp7.setIcon(mf.cardMach(cards1[i]));
+					mf.jlp7.setIcon(mf.cardMach(cards1[i]));
 					pln(""+mf.cardMach(cards1[i]));
 					Thread.sleep(300);
 					mf.jbp8.setIcon(mf.cardMach(cards2[i]));
@@ -240,19 +240,20 @@ class StuClient extends Thread {
 		JButton bp1, bp2;
 		JTextArea jta1, jta2;
 		JTextField jtf1;
-		JLabel jlj1, jlj2, jlj3, jlj4;
+		JLabel jlj1, jlj2, jlj3, jlj4, jlj5;
 		JLabel jlb1, jlb2, jlb3, jlb4;
 		JLabel jwl1, jwl4;
 		JLabel jlk1, jlk2, jlk3, jlk4, jlk5, jlk6, jlk7, jlk8, jlk9, jlk10, jlk11, jlk12;
 		JLabel jli1, jli2, jli3, jli4, jli5, jli6, jli7; // 로고 , 캐릭터이미지
 		JLabel jbc1, jbc2, jbc3, jbc4, jbc5, jbc6, jbc7, jbc8, jbc9; // 중앙라벨
-		JLabel jlp1, jlp2, jlp3, jlp4, jlp5, jlp6;
+		JLabel jlp1, jlp2, jlp3, jlp4, jlp5, jlp6, jlp7;
 		JButton jbb1, jbb2, jbb3, jbb4; // 배팅이미지 버튼
-		JButton jbp7, jbp8; // 패 버튼
+		JButton jbr1, jbr2, jbr3, jbr4;
+		JButton jbp8; // 패 버튼
 		JButton jbj1, jbj2, jbj3, jbj4; // 유저 족보 나타내기
 		JButton jbub1, jbub2, jbub3, jbub4; // 유저배팅
 		String msg;
-		Font font1 = new Font("a전자시계",Font.PLAIN, 30);
+		Font font1 = new Font("a전자시계", Font.PLAIN, 40);
 
 		// 이미지 공유폴더에 업로드 해줄 것
 		ImageIcon i1 = new ImageIcon("./image/완성/화투이미지/1+.png");
@@ -316,7 +317,7 @@ class StuClient extends Thread {
 		ImageIcon i80 = new ImageIcon("./image/완성/갑오.png");
 		ImageIcon i81 = new ImageIcon("./image/완성/끗망통.png");
 		ImageIcon i82 = new ImageIcon("./image/완성/구사.png");
-		
+
 		ImageIcon i100 = new ImageIcon("./image/완성/화투이미지/background.png");
 
 		ImageIcon cardMach(int cards) {
@@ -367,6 +368,7 @@ class StuClient extends Thread {
 
 		void cliIN() {
 			Color k = new Color(80, 120, 32);
+			Color b = new Color(44, 66, 18);
 			cm1 = getContentPane();
 			setLayout(new GridLayout(3, 3));
 
@@ -378,10 +380,10 @@ class StuClient extends Thread {
 			cm1.add(c1p6 = new JPanel());
 			cm1.add(c1p7 = new JPanel());
 			cm1.add(c1p8 = new JPanel());
-//			cm1.add(c1p9 = new JPanel());
+			//cm1.add(c1p9 = new JPanel());
 			
-					c1p9 = new JPanel(){
-			 
+			c1p9 = new JPanel()
+			 {
 					{
 						setOpaque(false);
 					}
@@ -444,9 +446,10 @@ class StuClient extends Thread {
 					super.paintComponent(g);
 				}
 			};
+			//jta1.setFont(font1);
 			JScrollPane jsp1 = new JScrollPane(jta1, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 					JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-			jta1.setBackground(k);
+			// jta1.setBackground(k);
 			jta1.setEnabled(false);
 			c1p3.add(jsp1);
 
@@ -462,13 +465,13 @@ class StuClient extends Thread {
 
 			// 중앙 패널
 			c1p5.add(jbc1 = new JLabel(i59));
-			c1p5.add(jbc2 = new JLabel(i55));
+			c1p5.add(jbr1 = new JButton(i55));
 			c1p5.add(jbc3 = new JLabel(i59));
-			c1p5.add(jbc4 = new JLabel(i54));
+			c1p5.add(jbr2 = new JButton(i54));
 			c1p5.add(jbc5 = new JLabel(i53));
-			c1p5.add(jbc6 = new JLabel(i56));
+			c1p5.add(jbr3 = new JButton(i56));
 			c1p5.add(jbc7 = new JLabel(i59));
-			c1p5.add(jbc8 = new JLabel(i57));
+			c1p5.add(jbr4 = new JButton(i57));
 			c1p5.add(jbc9 = new JLabel(i58));
 
 			// 유저3 패널
@@ -493,34 +496,38 @@ class StuClient extends Thread {
 			jbb4.addActionListener(this);
 
 			// 자신의 패널
-			c1p8.add(jbp7 = new JButton());
+			c1p8.add(jlp7 = new JLabel());
+			jlp7.setBackground(k);
 			c1p8.add(jbp8 = new JButton());
+			jbp8.setBackground(k);
 			c1p8.add(c2p8 = new JPanel());
 			c2p8.setLayout(new FlowLayout());
 			c2p8.setBackground(k);
 			c2p8.add(jli4 = new JLabel(i33)); // 2;
-			c2p8.add(jlj4 = new JLabel("ID : " + ip));
-			c2p8.add(jlj4 = new JLabel("자금 : " + ip));
+			c2p8.add(jlj4 = new JLabel());
+			c2p8.add(jlj5 = new JLabel("자금 : " + ip));
 			c2p8.add(jlb4 = new JLabel(i49));
 
 			// 채팅 패널
-
-			jta2 = new JTextArea(10, 31) {
-				{
-					setOpaque(false);
-				}
-
-				public void paintComponent(Graphics g) {
-					g.drawImage(i52, 0, 0, this);
-					super.paintComponent(g);
-				}
-			};
+			//	jta2 = new JTextArea(10, 31) {
+//				{
+//					setOpaque(false);
+//				}
+//
+//				public void paintComponent(Graphics g) {
+//					g.drawImage(i52, 0, 0, this);
+//					super.paintComponent(g);
+//				}
+//			};
+			//jta2.setBackground(b);
+			jta2 = new JTextArea(10, 31);
 			JScrollPane jsp2 = new JScrollPane(jta2, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
 					JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			c1p9.add(jsp2);
+			//jta2.setOpaque(false);
 			c1p9.add(jwl4 = new JLabel(" 채팅입력 : "));
 			c1p9.add(jtf1 = new JTextField(25));
-			jta2.setBackground(k);
+			// jta2.setBackground(k);
 			jta2.setEnabled(false);
 			jtf1.addActionListener(this);
 
@@ -555,6 +562,11 @@ class StuClient extends Thread {
 				// 올인
 			} else if (obj == jbb4) {
 				// st.die();
+			} else if (obj == jbb4) {
+			} else if (obj == jbb4) {
+			} else if (obj == jbb4) {
+			} else if (obj == jbb4) {
+				
 			}
 		}
 	}
@@ -570,7 +582,7 @@ class StuClient extends Thread {
 					// System.out.println(time+"초 남았습니다");
 				} catch (InterruptedException e) {
 				}
-				mf.jli7.setText(time + "초 남았다 긴장해라\n야야");
+				mf.jli7.setText("   "+time + "sec.");
 				time--;
 				// if (time == 0) {
 				// time1.setText("Game Over..."); //시간초과로 다이
