@@ -87,6 +87,7 @@ class StuServer extends Thread {
 			//사용자의 레디수 확인하기
 			for (StuCM re : cv) {
 				if (re.ready == true) readyCount++;
+				cm.broadcast("mem","게임레디 멤버("+re.id+")정보 전달");
 			}
 			//레디정보 브로드캐스팅
 			cm.broadcast("log",cli.id + "님이 준비 완료되었습니다! ( 준비 인원 " + readyCount + "/" + cv.size() + "명 )");
@@ -101,6 +102,7 @@ class StuServer extends Thread {
 			//[레디수 = 사람수]일 때, 게임 시작
 			if (readyCount == cv.size() & readyCount >= 2) {
 				setStop(false);
+				gm=false;
 				cm.broadcast("log","게임을 시작합니다");
 				pln("게임을 시작합니다.");
 				cm.broadcast("mem", "게임참가 멤버정보 전달");	

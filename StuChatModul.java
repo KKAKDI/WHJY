@@ -49,7 +49,6 @@ class StuCM extends Thread {
 				}
 
 				if (userCount < 2) { // 중복없을 때
-					id = id;
 					break;
 				} else { // 중복일 때
 					id = id + ods;
@@ -57,6 +56,7 @@ class StuCM extends Thread {
 			}
 			isYourId(id);
 
+			broadcast("mem","게임입장 멤버("+id+")정보 전달");
 			broadcast("log", id + "님이 입장하셨습니다. ( 총 인원 " + sts.cv.size() + "명 )");
 			sts.pln(id + "님이 입장하셨습니다. ( 총 인원 " + sts.cv.size() + "명 )");
 
@@ -73,6 +73,8 @@ class StuCM extends Thread {
 			}
 			//나간 사용자 정보 삭제
 			sts.cv.remove(this);
+			//broadcast("memout", id);
+			broadcast("mem","아웃멤버 클라이언트에게 전달");
 			broadcast("log", id + "님이 퇴장하셨습니다. ( 총 인원 " + sts.cv.size() + "명 )");
 			sts.pln(id + "님이 퇴장하셨습니다. ( 총 인원 " + sts.cv.size() + "명 )");
 			//현사용자가 3명이하면 새 사용자를 받는다.
@@ -103,6 +105,7 @@ class StuCM extends Thread {
 					sts.readyCount--;
 					broadcast("log", id + "님이 대기 상태입니다. ( 준비 인원 " + sts.readyCount + "/" + sts.cv.size() + "명 )");
 					sts.pln(id + "님이 대기 상태입니다. ( 준비 인원 " + sts.readyCount + "/" + sts.cv.size() + "명 )");
+					broadcast("mem","게임레디취소 멤버("+id+")정보 전달");
 					sts.ready4Client(this);
 				}		
 			}
@@ -171,7 +174,7 @@ class StuCM extends Thread {
 					token = token + size;
 
 					for(StuCM gmem : sts.cv){
-						token = token + t + gmem.id;
+						token = token + t + "(" + gmem.id + "," + gmem.ready + ")";
 					}
 					modul.dos.writeUTF(token);
 					//현재 게임로직에서 수행 중
@@ -190,6 +193,16 @@ class StuCM extends Thread {
 				}else if(flag.equals("start")) { //게임시작 프로토콜
 					modul.dos.writeUTF("#start_"+msg);
 				}
+/*				//사람이 나갔을 때 (나간아이디의 벡터순서를 보냄)
+				}else if(flag.equals("memout")) { 
+					int index = 0;
+					for(int i=0; i<sts.cv.size(); i++){
+						if(sts.cv.get(i).id.equals(msg)){
+							index = i;
+							modul.dos.writeUTF("#memout_"+index);
+						}
+					}
+*/
 				else{
 					sts.pln("존재않는 프로토콜");
 				}
