@@ -156,10 +156,10 @@ class StuClient extends Thread {
 			for (int i = 0; i < scs.size(); i++) {
 				if (id.equals(scs.get(i))) {		
 					Thread.sleep(300);
-					((JLabel)user1[i]).setIcon(mf.cardMach(cards1[i]));
+					mf.jbp7.setIcon(mf.cardMach(cards1[i]));
 					pln(""+mf.cardMach(cards1[i]));
 					Thread.sleep(300);
-					((JLabel)user2[i]).setIcon(mf.cardMach(cards2[i]));
+					mf.jbp8.setIcon(mf.cardMach(cards2[i]));
 					pln(""+mf.cardMach(cards2[i]));
 					Thread.sleep(300);
 				} else { //그렇지 않은경우 12시에 패					
