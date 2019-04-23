@@ -142,23 +142,33 @@ class StuClient extends Thread {
 
 	void idMach() {		
 		try {
+			Object user1[] = new Object[4];
+			Object user2[] = new Object[4];
+			user1[0] = mf.jlp3;
+			user2[0] = mf.jlp4;
+			user1[1]	=	mf.jlp1;
+			user2[1] =	mf.jlp2;
+			user1[2]	= mf.jlp5;
+			user2[2]	=	mf.jlp6;
+			user1[3] = mf.jbp7;
+			user2[3] = mf.jbp8;
 			//내 아이디와 같을경우 6시에 패
 			for (int i = 0; i < scs.size(); i++) {
 				if (id.equals(scs.get(i))) {		
 					Thread.sleep(300);
-					mf.jbp7.setIcon(mf.cardMach(cards1[i]));
+					((JLabel)user1[i]).setIcon(mf.cardMach(cards1[i]));
 					pln(""+mf.cardMach(cards1[i]));
 					Thread.sleep(300);
-					mf.jbp8.setIcon(mf.cardMach(cards2[i]));
+					((JLabel)user2[i]).setIcon(mf.cardMach(cards2[i]));
 					pln(""+mf.cardMach(cards2[i]));
 					Thread.sleep(300);
-				} else { //그렇지 않은경우 12시에 패
+				} else { //그렇지 않은경우 12시에 패					
 					pln(scs.get(i));
 					//mf.jbub2.setText(scs.get(i));
 					Thread.sleep(300);
-					mf.jlp1.setIcon(mf.cardMach(cards1[i]));
+					((JLabel)user1[i]).setIcon(mf.cardMach(cards1[i]));
 					Thread.sleep(300);
-					mf.jlp2.setIcon(mf.cardMach(cards2[i]));
+					((JLabel)user2[i]).setIcon(mf.cardMach(cards2[i]));
 					Thread.sleep(300);
 				}
 			}
