@@ -98,7 +98,7 @@ class StuClient extends Thread {
 			String memInfo[] =items[1].split("//");
 			int user = Integer.parseInt(memInfo[0]);
 			int power = Integer.parseInt(memInfo[1]);
-			idMatch(user,power);
+			//idMatch(user,power);
 		} else if (items[0].equals("#judge")) {
 			pln("승 리");
 			// 로그
@@ -328,10 +328,7 @@ class StuClient extends Thread {
 			for (int i = 0; i < scs.size(); i++) {
 				if (id.equals(scs.get(i))) { //남쪽 내패 
 					Thread.sleep(300);
-					mf.jlp7.setIcon(mf.cardMach(cards1[i]));
-					Thread.sleep(300);
-					mf.jbp8.setIcon(mf.cardMach(cards2[i]));
-					Thread.sleep(300);
+					mf.jlp7.setIcon(mf.cardMach(cards1[i]));					
 					//버튼 클릭시 내패 까기 (구현 못할거 같음)
 //					if(open.equals("zndWKrWkr")) {
 //						mf.jbp8.setIcon(mf.cardMach(cards2[i]));
@@ -340,85 +337,95 @@ class StuClient extends Thread {
 					//족보 라벨
 				} else if (!(id.equals(scs.get(i)))&&user1ID.equals(scs.get(i))) { // 동쪽
 					Thread.sleep(300);
-					mf.jlp3.setIcon(mf.i101);
-					Thread.sleep(300);
-					mf.jlp4.setIcon(mf.i101);
-					Thread.sleep(300);
+					mf.jlp3.setIcon(mf.i101);					
 					a++;
 					if(open.equals("dPfladl")) {
-						Thread.sleep(100);
-						mf.jlp3.setIcon(mf.cardMach(cards1[i]));
-						Thread.sleep(100);
-						mf.jlp4.setIcon(mf.cardMach(cards2[i]));
-						Thread.sleep(100);
+						mf.jlp3.setIcon(mf.cardMach(cards1[i]));						
 					}
 				}  else  if (!(id.equals(scs.get(i)))&&user2ID.equals(scs.get(i))) { //북쪽
 					Thread.sleep(300);
-					mf.jlp1.setIcon(mf.i101);
-					Thread.sleep(300);
-					mf.jlp2.setIcon(mf.i101);
-					Thread.sleep(300);
+					mf.jlp1.setIcon(mf.i101);					
 					b++;
 					if(open.equals("dPfladl")) {
-						Thread.sleep(100);
-						mf.jlp1.setIcon(mf.cardMach(cards1[i]));
-						Thread.sleep(100);
-						mf.jlp2.setIcon(mf.cardMach(cards2[i]));
-						Thread.sleep(100);
+						mf.jlp1.setIcon(mf.cardMach(cards1[i]));						
 					}
 				} else if (!(id.equals(scs.get(i)))&&user3ID.equals(scs.get(i))) { //서쪽	
 					Thread.sleep(300);
-					mf.jlp5.setIcon(mf.i101);
-					Thread.sleep(300);
-					mf.jlp6.setIcon(mf.i101);
-					Thread.sleep(300);
+					mf.jlp5.setIcon(mf.i101);					
 					c++;
 					if(open.equals("dPfladl")) {
-						Thread.sleep(100);
-						mf.jlp5.setIcon(mf.cardMach(cards1[i]));
-						Thread.sleep(100);
-						mf.jlp6.setIcon(mf.cardMach(cards2[i]));
-						Thread.sleep(100);
+						mf.jlp5.setIcon(mf.cardMach(cards1[i]));						
 					}
 				} else {	//서쪽
 					if(!(id.equals(scs.get(i)))&&user4ID.equals(scs.get(i))&&a==0) {//동쪽이 비었을 때 user4
 						Thread.sleep(300);
-						mf.jlp3.setIcon(mf.i101);
-						Thread.sleep(300);
-						mf.jlp4.setIcon(mf.i101);
-						Thread.sleep(300);
+						mf.jlp3.setIcon(mf.i101);						
 						if(open.equals("dPfladl")) {
-							Thread.sleep(100);
-							mf.jlp3.setIcon(mf.cardMach(cards1[i]));
-							Thread.sleep(100);
-							mf.jlp4.setIcon(mf.cardMach(cards2[i]));
-							Thread.sleep(100);
+							mf.jlp3.setIcon(mf.cardMach(cards1[i]));						
 						}
 					}else if(!(id.equals(scs.get(i)))&&user4ID.equals(scs.get(i))&&b==0){//북쪽이 비었을 때 user4
 						Thread.sleep(300);
-						mf.jlp1.setIcon(mf.i101);
-						Thread.sleep(300);
-						mf.jlp2.setIcon(mf.i101);
-						Thread.sleep(300);
+						mf.jlp1.setIcon(mf.i101);						
 						if(open.equals("dPfladl")) {
-							Thread.sleep(100);
-							mf.jlp1.setIcon(mf.cardMach(cards1[i]));
-							Thread.sleep(100);
-							mf.jlp2.setIcon(mf.cardMach(cards2[i]));
-							Thread.sleep(100);
+							mf.jlp1.setIcon(mf.cardMach(cards1[i]));							
 						}
 					}else {
 						Thread.sleep(300);
-						mf.jlp5.setIcon(mf.i101);
-						Thread.sleep(300);
-						mf.jlp6.setIcon(mf.i101);
-						Thread.sleep(300);
+						mf.jlp5.setIcon(mf.i101);						
 						if(open.equals("dPfladl")) {
-							Thread.sleep(100);
-							mf.jlp5.setIcon(mf.cardMach(cards1[i]));
-							Thread.sleep(100);
+							mf.jlp5.setIcon(mf.cardMach(cards1[i]));							
+						}
+					}					
+				}
+			}for (int i = 0; i < scs.size(); i++) {
+				if (id.equals(scs.get(i))) { //남쪽 내패 					
+					Thread.sleep(300);
+					mf.jbp8.setIcon(mf.cardMach(cards2[i]));					
+					//버튼 클릭시 내패 까기 (구현 못할거 같음)
+//					if(open.equals("zndWKrWkr")) {
+//						mf.jbp8.setIcon(mf.cardMach(cards2[i]));
+//						Thread.sleep(300);
+//					}
+					//족보 라벨
+				} else if (!(id.equals(scs.get(i)))&&user1ID.equals(scs.get(i))) { // 동쪽					
+					Thread.sleep(300);
+					mf.jlp4.setIcon(mf.i101);					
+					a++;
+					if(open.equals("dPfladl")) {	
+						mf.jlp4.setIcon(mf.cardMach(cards2[i]));	
+					}
+				}  else  if (!(id.equals(scs.get(i)))&&user2ID.equals(scs.get(i))) { //북쪽					
+					Thread.sleep(300);
+					mf.jlp2.setIcon(mf.i101);
+					b++;
+					if(open.equals("dPfladl")) {	
+						mf.jlp2.setIcon(mf.cardMach(cards2[i]));						
+					}
+				} else if (!(id.equals(scs.get(i)))&&user3ID.equals(scs.get(i))) { //서쪽						
+					Thread.sleep(300);
+					mf.jlp6.setIcon(mf.i101);					
+					c++;
+					if(open.equals("dPfladl")) {
+						mf.jlp6.setIcon(mf.cardMach(cards2[i]));
+					}
+				} else {	//서쪽
+					if(!(id.equals(scs.get(i)))&&user4ID.equals(scs.get(i))&&a==0) {//동쪽이 비었을 때 user4						
+						Thread.sleep(300);
+						mf.jlp4.setIcon(mf.i101);						
+						if(open.equals("dPfladl")) {	
+							mf.jlp4.setIcon(mf.cardMach(cards2[i]));
+						}
+					}else if(!(id.equals(scs.get(i)))&&user4ID.equals(scs.get(i))&&b==0){//북쪽이 비었을 때 user4						
+						Thread.sleep(300);
+						mf.jlp2.setIcon(mf.i101);						
+						if(open.equals("dPfladl")) {	
+							mf.jlp2.setIcon(mf.cardMach(cards2[i]));							
+						}
+					}else {						
+						Thread.sleep(300);
+						mf.jlp6.setIcon(mf.i101);					
+						if(open.equals("dPfladl")) {								
 							mf.jlp6.setIcon(mf.cardMach(cards2[i]));
-							Thread.sleep(100);
 						}
 					}					
 				}
