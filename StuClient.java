@@ -116,10 +116,10 @@ class StuClient extends Thread {
 		}else if(items[0].equals("#batting")) {
 			pln("배팅시작 올 스탑");
 			//배팅 기능
-			try {
-				dos.writeUTF("dhgkaak");
-			} catch (IOException e) {
-			}
+//			try {
+//				dos.writeUTF("dhgkaak");
+//			} catch (IOException e) {
+//			}
 		}else if (items[0].equals("#end")) {
 			cnt1=0;
 			cnt2=0;
@@ -242,6 +242,7 @@ class StuClient extends Thread {
 		JButton jbj1, jbj2, jbj3, jbj4; // 유저 족보 나타내기
 		JButton jbub1, jbub2, jbub3, jbub4; // 유저배팅
 		String msg;
+		Font font1 = new Font("a전자시계",Font.PLAIN, 30);
 
 		// 이미지 공유폴더에 업로드 해줄 것
 		ImageIcon i1 = new ImageIcon("./image/완성/화투이미지/1+.png");
@@ -274,7 +275,7 @@ class StuClient extends Thread {
 		ImageIcon i41 = new ImageIcon("./image/완성/harf.png");
 		ImageIcon i42 = new ImageIcon("./image/완성/allin.png");
 		ImageIcon i43 = new ImageIcon("./image/완성/die.png");
-		ImageIcon i44 = new ImageIcon("./image/완성/logo.png");
+		ImageIcon i44 = new ImageIcon("./image/완성/mainlogo.png");
 		ImageIcon i45 = new ImageIcon("./image/완성/원하지연.png");
 		ImageIcon i46 = new ImageIcon("./image/완성/콜.png");
 		ImageIcon i47 = new ImageIcon("./image/완성/하프.png");
@@ -289,6 +290,22 @@ class StuClient extends Thread {
 		ImageIcon i55 = new ImageIcon("./image/완성/12시레디.png");
 		ImageIcon i56 = new ImageIcon("./image/완성/3시레디.png");
 		ImageIcon i57 = new ImageIcon("./image/완성/6시레디.png");
+		ImageIcon i58 = new ImageIcon("./image/완성/승리2.png");
+		ImageIcon i59 = new ImageIcon("./image/완성/패배2.png");
+
+		ImageIcon i70 = new ImageIcon("./image/완성/기본족보판.png");
+		ImageIcon i71 = new ImageIcon("./image/완성/삼팔광땡.png");
+		ImageIcon i72 = new ImageIcon("./image/완성/광땡.png");
+		ImageIcon i73 = new ImageIcon("./image/완성/땡.png");
+		ImageIcon i74 = new ImageIcon("./image/완성/알리.png");
+		ImageIcon i75 = new ImageIcon("./image/완성/독사.png");
+		ImageIcon i76 = new ImageIcon("./image/완성/구삥.png");
+		ImageIcon i77 = new ImageIcon("./image/완성/장삥.png");
+		ImageIcon i78 = new ImageIcon("./image/완성/장사.png");
+		ImageIcon i79 = new ImageIcon("./image/완성/세륙.png");
+		ImageIcon i80 = new ImageIcon("./image/완성/갑오.png");
+		ImageIcon i81 = new ImageIcon("./image/완성/끗망통.png");
+		ImageIcon i82 = new ImageIcon("./image/완성/구사.png");
 		
 		ImageIcon i100 = new ImageIcon("./image/완성/화투이미지/background.png");
 
@@ -351,7 +368,20 @@ class StuClient extends Thread {
 			cm1.add(c1p6 = new JPanel());
 			cm1.add(c1p7 = new JPanel());
 			cm1.add(c1p8 = new JPanel());
-			cm1.add(c1p9 = new JPanel());
+//			cm1.add(c1p9 = new JPanel());
+			
+					c1p9 = new JPanel(){
+			 
+					{
+						setOpaque(false);
+					}
+
+					public void paintComponent(Graphics g) {
+						g.drawImage(i52, 0, 0, this);
+						super.paintComponent(g);
+					}
+				};
+				cm1.add(c1p9);
 
 			c1p1.setLayout(new GridLayout(2, 1));
 			c1p2.setLayout(new GridLayout(1, 3));
@@ -380,7 +410,8 @@ class StuClient extends Thread {
 			c1p1.add(jli5 = new JLabel(i44));
 			c1p1.add(jli6 = new JLabel());
 			c1p1.add(jli7 = new JLabel());
-			//jli7.setText(t.start() + "초남았다.");
+			jli7.setFont(font1);
+			// jli7.setText(t.start() + "초남았다.");
 			t.start();
 			// 유저2 패널
 			c1p2.add(c2p2 = new JPanel());
@@ -420,41 +451,28 @@ class StuClient extends Thread {
 			c1p4.add(jlp4 = new JLabel(i100));
 
 			// 중앙 패널
-			c1p5.add(jbc1 = new JLabel());
+			c1p5.add(jbc1 = new JLabel(i59));
 			c1p5.add(jbc2 = new JLabel(i55));
-			c1p5.add(jbc3 = new JLabel());
+			c1p5.add(jbc3 = new JLabel(i59));
 			c1p5.add(jbc4 = new JLabel(i54));
 			c1p5.add(jbc5 = new JLabel(i53));
 			c1p5.add(jbc6 = new JLabel(i56));
-			c1p5.add(jbc7 = new JLabel());
+			c1p5.add(jbc7 = new JLabel(i59));
 			c1p5.add(jbc8 = new JLabel(i57));
-			c1p5.add(jbc9 = new JLabel());
+			c1p5.add(jbc9 = new JLabel(i58));
 
 			// 유저3 패널
+			c1p6.add(jlp5 = new JLabel(i100));
+			c1p6.add(jlp6 = new JLabel(i100));
 			c1p6.add(c2p6 = new JPanel());
 			c2p6.setLayout(new GridLayout(3, 1));
 			c2p6.setBackground(k);
 			c2p6.add(jli3 = new JLabel(i32)); // 2;
 			c2p6.add(jlj3 = new JLabel(i50));
 			c2p6.add(jlb3 = new JLabel(i48));
-			c1p6.add(jlp5 = new JLabel(i100));
-			c1p6.add(jlp6 = new JLabel(i100));
 
 			// 자신의 족보,배팅 패널
-			c1p7.add(c3p7 = new JPanel());
-			c3p7.setLayout(new GridLayout(6, 2));
-			c3p7.add(jlk1 = new JLabel("삼팔광땡"));
-			c3p7.add(jlk2 = new JLabel("광		 땡"));
-			c3p7.add(jlk3 = new JLabel("		땡		"));
-			c3p7.add(jlk4 = new JLabel("알		 리"));
-			c3p7.add(jlk5 = new JLabel("독		 사"));
-			c3p7.add(jlk6 = new JLabel("구		 삥"));
-			c3p7.add(jlk7 = new JLabel("장		 삥"));
-			c3p7.add(jlk8 = new JLabel("장		 사"));
-			c3p7.add(jlk9 = new JLabel("세		 륙"));
-			c3p7.add(jlk10 = new JLabel("갑		 오"));
-			c3p7.add(jlk11 = new JLabel("끗/ /망통"));
-			c3p7.add(jlk12 = new JLabel("구		 사"));
+			c1p7.add(jlk1 = new JLabel(i70));
 			c1p7.add(c2p7 = new JPanel());
 			c2p7.setLayout(new GridLayout(4, 1));
 			c2p7.setBackground(k);
@@ -462,15 +480,17 @@ class StuClient extends Thread {
 			c2p7.add(jbb2 = new JButton(i41));
 			c2p7.add(jbb3 = new JButton(i42));
 			c2p7.add(jbb4 = new JButton(i43));
+			jbb4.addActionListener(this);
 
 			// 자신의 패널
 			c1p8.add(jbp7 = new JButton());
 			c1p8.add(jbp8 = new JButton());
 			c1p8.add(c2p8 = new JPanel());
-			c2p8.setLayout(new GridLayout(3, 1));
+			c2p8.setLayout(new FlowLayout());
 			c2p8.setBackground(k);
 			c2p8.add(jli4 = new JLabel(i33)); // 2;
-			c2p8.add(jlj4 = new JLabel(i50));
+			c2p8.add(jlj4 = new JLabel("ID : " + ip));
+			c2p8.add(jlj4 = new JLabel("자금 : " + ip));
 			c2p8.add(jlb4 = new JLabel(i49));
 
 			// 채팅 패널
@@ -517,6 +537,14 @@ class StuClient extends Thread {
 					dos.flush();
 				} catch (IOException ie) {
 				}
+			} else if (obj == jbb1) {
+				// 콜
+			} else if (obj == jbb2) {
+				// 하프
+			} else if (obj == jbb3) {
+				// 올인
+			} else if (obj == jbb4) {
+				// st.die();
 			}
 		}
 	}
@@ -526,12 +554,13 @@ class StuClient extends Thread {
 		public void run() {
 			int time = 10;
 			while (true) {
-				try {					
+				try {
+					MainFrame mf = new MainFrame();
 					Thread.sleep(1000);
-					//System.out.println(time+"초 남았습니다");
-					} catch (InterruptedException e) {
+					// System.out.println(time+"초 남았습니다");
+				} catch (InterruptedException e) {
 				}
-				mf.jli7.setText(time + "초 남았다 긴장해라");
+				mf.jli7.setText(time + "초 남았다 긴장해라\n야야");
 				time--;
 				// if (time == 0) {
 				// time1.setText("Game Over..."); //시간초과로 다이
