@@ -178,13 +178,13 @@ class StuCM extends Thread {
 					}
 					modul.dos.writeUTF(token);
 					//현재 게임로직에서 수행 중
-//				//족보
-//				}else if(flag.equals("power")){
-//					modul.dos.writeUTF("#power_"+msg);
-//				//승리
+				//족보
+				}else if(flag.equals("power")){
+					modul.dos.writeUTF("#power_"+msg);
+				//승리
 //				}else if(flag.equals("judge")){
 //					modul.dos.writeUTF("#judge_"+msg);
-//				//배팅
+				//배팅
 				}else if(flag.equals("batting")){
 					modul.dos.writeUTF("#batting_"+msg);
 				//게임끝
