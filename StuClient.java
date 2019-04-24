@@ -141,16 +141,16 @@ class StuClient extends Thread {
 		
 		ImageIcon icon =null;
 		switch (power) {
-		case 0:		icon = mf.i102;	break; //¸ÁÅë
-		case 1:		icon = mf.i103;	break; //ÇÑ²ý
-		case 2:		icon = mf.i104;break; //µÎ²ý
-		case 3:		icon = mf.i105;	break; //¼¼²ý
-		case 4:		icon = mf.i106;	break; //³×²ý
-		case 5:		icon = mf.i107;	break; //´Ù¼¸²ý
-		case 6:		icon =	mf.i108;break; //¿©¼¸²ý
-		case 7:		icon = mf.i109;	break; //ÀÏ°ö²ý
-		case 8:		icon = mf.i110;	break; //¿©´ü²ý
-		case 9:		icon = mf.i111;	break; //°©¿À
+		case 0:	icon = mf.i102;	break; //¸ÁÅë
+		case 1:	icon = mf.i103;	break; //ÇÑ²ý
+		case 2:	icon = mf.i104;break; //µÎ²ý
+		case 3:	icon = mf.i105;	break; //¼¼²ý
+		case 4:	icon = mf.i106;	break; //³×²ý
+		case 5:	icon = mf.i107;	break; //´Ù¼¸²ý
+		case 6:	icon =	mf.i108;break; //¿©¼¸²ý
+		case 7:	icon = mf.i109;	break; //ÀÏ°ö²ý
+		case 8:	icon = mf.i110;	break; //¿©´ü²ý
+		case 9:	icon = mf.i111;	break; //°©¿À
 		case 10:	icon = mf.i112;	break; //¼¼·ú
 		case 11:	icon = mf.i113;	break; //Àå»ç
 		case 12:	icon = mf.i114;	break; //Àå»æ
@@ -222,16 +222,16 @@ class StuClient extends Thread {
 	ImageIcon myTree(int power){ // ³» Á·º¸
 		ImageIcon icon =null;
 		switch (power) {
-		case 0:		icon = mf.i81;	break;
-		case 1:		icon = mf.i81;	break;
-		case 2:		icon = mf.i81;	break;
-		case 3:		icon = mf.i81;	break;
-		case 4:		icon = mf.i81;	break;
-		case 5:		icon = mf.i81;	break;
-		case 6:		icon =	mf.i81;	break;
-		case 7:		icon = mf.i81;	break;
-		case 8:		icon = mf.i81;	break;
-		case 9:		icon = mf.i80;	break;
+		case 0:	icon = mf.i81;	break;
+		case 1:	icon = mf.i81;	break;
+		case 2:	icon = mf.i81;	break;
+		case 3:	icon = mf.i81;	break;
+		case 4:	icon = mf.i81;	break;
+		case 5:	icon = mf.i81;	break;
+		case 6:	icon =	mf.i81;	break;
+		case 7:	icon = mf.i81;	break;
+		case 8:	icon = mf.i81;	break;
+		case 9:	icon = mf.i80;	break;
 		case 10:	icon = mf.i79;	break;
 		case 11:	icon = mf.i78;	break;
 		case 12:	icon = mf.i77;	break;
@@ -437,7 +437,9 @@ class StuClient extends Thread {
 
 	public void run() { // ÀÐ±â
 		try {
-			// ¾ÆÀÌµðÈ®Á¤			
+			// ¾ÆÀÌµðÈ®Á¤
+			id = dis.readUTF();
+			mf.jlj4.setText(id);
 			mf.jta2.append("< ´ç½ÅÀÇ ¾ÆÀÌµð´Â [ " + id + " ]ÀÔ´Ï´Ù. > \n");
 
 			while (true) {
