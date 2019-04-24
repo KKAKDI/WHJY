@@ -66,13 +66,14 @@ class GameLogic{
 		}
 		for (int k = 0; k < userCnt; k++) {
 			p(card1[k] + " | " + card2[k] + ">>");
-			powers[k] = cardTree(card1[k], card2[k]); // 파워 포인트 return
+			powers[k] = cardTree(card1[k], card2[k]); // 파워 포인트 return			
 			scm.broadcast("power",k+"//"+powers[k]);
+			pln(k+"번째 :"+powers[k]+"");
 			if (win < powers[k])
 				win = powers[k];// 가장 큰 수 저장
 		}
 		if (win == 26 || win == 16) {
-			reGame();
+			//reGame();
 		}
 		judge();
 	}

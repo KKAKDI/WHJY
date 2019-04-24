@@ -26,7 +26,9 @@ class StuClient extends Thread {
 	Thread t1;
 	int cards1[] = new int[4];
 	int cards2[] = new int[4];
-	int cnt1, cnt2;
+	int user[] =new int[4];
+	int power[] = new int[4];
+	int cnt1, cnt2,cnt3;
 	Object user1[] = new Object[4];
 	Object user2[] = new Object[4];
 
@@ -96,9 +98,11 @@ class StuClient extends Thread {
 			// 족보확인
 		} else if (items[0].equals("#power")) {
 			String memInfo[] = items[1].split("//");
-			int user = Integer.parseInt(memInfo[0]);
-			int power = Integer.parseInt(memInfo[1]);
-			// idMatch(user,power);
+			user[cnt3] = Integer.parseInt(memInfo[0]);
+			power[cnt3] = Integer.parseInt(memInfo[1]);
+			pln(user[cnt3]+"/"+power[cnt3]+"");
+			idMatch(user[cnt3],power[cnt3],"");
+			cnt3++;
 		} else if (items[0].equals("#judge")) {
 			pln("승 리");
 			// 로그
@@ -116,6 +120,9 @@ class StuClient extends Thread {
 			batting();
 			// 패돌리기
 			idMatch("dPfladl");
+			for(int i=0;i<user.length;i++) {
+				idMatch(user[i],power[i],"dPfladl");
+			}			
 			// 게임참가 유저리스트 초기화
 		} else if (items[0].equals("#end")) {
 			end();
@@ -128,7 +135,7 @@ class StuClient extends Thread {
 		pln("배팅시작 올 스탑");
 		// 배팅 기능 구현 필요
 		try {
-			Thread.sleep(1000);
+			Thread.sleep(5000);
 		} catch (Exception e) {
 		}
 
@@ -414,62 +421,45 @@ class StuClient extends Thread {
 		return icon;
 	}
 
-	void idMatch(int us, int pr) { // 매치 오버로딩 for 족보
+	void idMatch(int us, int pr,String str) { // 매치 오버로딩 for 족보
 		try {
 			int user = us;
-			int power = pr;
-			String user1ID = "";
-			String user2ID = "";
-			String user3ID = "";
-			String user4ID = "";
+			int power = pr;		
+			String msg =str;
+			String user1ID = scs.get(0);	
+			String user2ID = scs.get(1);
+			String user3ID = scs.get(2);
+			String user4ID = scs.get(3);
 			int a = 0;
 			int b = 0;
 			int c = 0;
-
-			switch (user) {
-			case 0:
-				user1ID = scs.get(0);
-				break; // qq
-			case 1:
-				user2ID = scs.get(1);
-				break; // ww
-			case 2:
-				user3ID = scs.get(2);
-				break; // ee
-			case 3:
-				user4ID = scs.get(3);
-				break; // rr
-			}
+			
 			for (int i = 0; i < scs.size(); i++) {
-				if (id.equals(scs.get(i))) { // 남쪽 내패
-					Thread.sleep(300);
-					// myTree(power);
-					mf.jlk1.setIcon(myTree(power)); // 내 족보 표시 메소드 완성 요망
-					// 족보 라벨
-				} else if (!(id.equals(scs.get(i))) && user1ID.equals(scs.get(i))) { // 동쪽
-					Thread.sleep(300);
-					mf.jbc6.setIcon(power(power));
+				if (id.equals(scs.get(i))) { // 남쪽 내패					
+					if(i==user&&msg.equals("dPfladl")) mf.jlk1.setIcon(myTree(power)); 	
 					a++;
-				} else if (!(id.equals(scs.get(i))) && user2ID.equals(scs.get(i))) { // 북쪽
-					Thread.sleep(300);
-					mf.jbc2.setIcon(power(power));
+				}else if(user1ID.equals(scs.get(i))) {
+					if(i==user&&msg.equals("dPfladl"))	mf.jbc4.setIcon(power(power));		
 					b++;
-				} else if (!(id.equals(scs.get(i))) && user3ID.equals(scs.get(i))) { // 서쪽
-					Thread.sleep(300);
-					mf.jbc4.setIcon(power(power));
+				}else if(user2ID.equals(scs.get(i))) {
+					if(i==user&&msg.equals("dPfladl"))	mf.jbc2.setIcon(power(power));
 					c++;
-				} else { // 서쪽
-					if (!(id.equals(scs.get(i))) && user4ID.equals(scs.get(i)) && a == 0) {// 동쪽이 비었을 때 user4
-						Thread.sleep(300);
-						mf.jbc6.setIcon(power(power));
-					} else if (!(id.equals(scs.get(i))) && user4ID.equals(scs.get(i)) && b == 0) {// 북쪽이 비었을 때 user4
-						Thread.sleep(300);
-						mf.jbc2.setIcon(power(power));
-					} else {
-						Thread.sleep(300);
-						mf.jbc4.setIcon(power(power));
+				}else if(user3ID.equals(scs.get(i))) {
+					if(i==user&&msg.equals("dPfladl"))	mf.jbc6.setIcon(power(power));
+				}else {
+					if(user4ID.equals(scs.get(i))&&b==0) {
+						if(i==user&&msg.equals("dPfladl"))	mf.jbc4.setIcon(power(power));
+						pln("1)"+a+" "+b+" " +c );
+					}else if(user4ID.equals(scs.get(i))) {
+						if(i==user&&msg.equals("dPfladl"))	mf.jbc2.setIcon(power(power));	
+						pln("2)"+a+" "+b+" " +c );
 					}
-				}
+					else {
+						//if(msg.equals("dPfladl"))
+						mf.jbc6.setIcon(power(power));		
+						pln(i+" "+user);
+					}
+				}	
 			}
 		} catch (Exception e) {
 			pln(e.getMessage());
@@ -488,7 +478,7 @@ class StuClient extends Thread {
 		try {
 			for (int i = 0; i < scs.size(); i++) {
 				if (id.equals(scs.get(i))) { // 남쪽 내패
-					Thread.sleep(300);
+					Thread.sleep(100);
 					mf.jlp7.setIcon(mf.cardMach(cards1[i]));
 					// 버튼 클릭시 내패 까기 (구현 못할거 같음)
 //					if(open.equals("zndWKrWkr")) {
@@ -497,21 +487,21 @@ class StuClient extends Thread {
 //					}
 					// 족보 라벨
 				} else if (!(id.equals(scs.get(i))) && user1ID.equals(scs.get(i))) { // 동쪽
-					Thread.sleep(300);
+					Thread.sleep(100);
 					mf.jlp3.setIcon(mf.i101);
 					a++;
 					if (open.equals("dPfladl")) {
 						mf.jlp3.setIcon(mf.cardMach(cards1[i]));
 					}
 				} else if (!(id.equals(scs.get(i))) && user2ID.equals(scs.get(i))) { // 북쪽
-					Thread.sleep(300);
+					Thread.sleep(100);
 					mf.jlp1.setIcon(mf.i101);
 					b++;
 					if (open.equals("dPfladl")) {
 						mf.jlp1.setIcon(mf.cardMach(cards1[i]));
 					}
 				} else if (!(id.equals(scs.get(i))) && user3ID.equals(scs.get(i))) { // 서쪽
-					Thread.sleep(300);
+					Thread.sleep(100);
 					mf.jlp5.setIcon(mf.i101);
 					c++;
 					if (open.equals("dPfladl")) {
@@ -519,19 +509,19 @@ class StuClient extends Thread {
 					}
 				} else { // 서쪽
 					if (!(id.equals(scs.get(i))) && user4ID.equals(scs.get(i)) && a == 0) {// 동쪽이 비었을 때 user4
-						Thread.sleep(300);
+						Thread.sleep(100);
 						mf.jlp3.setIcon(mf.i101);
 						if (open.equals("dPfladl")) {
 							mf.jlp3.setIcon(mf.cardMach(cards1[i]));
 						}
 					} else if (!(id.equals(scs.get(i))) && user4ID.equals(scs.get(i)) && b == 0) {// 북쪽이 비었을 때 user4
-						Thread.sleep(300);
+						Thread.sleep(100);
 						mf.jlp1.setIcon(mf.i101);
 						if (open.equals("dPfladl")) {
 							mf.jlp1.setIcon(mf.cardMach(cards1[i]));
 						}
 					} else {
-						Thread.sleep(300);
+						Thread.sleep(100);
 						mf.jlp5.setIcon(mf.i101);
 						if (open.equals("dPfladl")) {
 							mf.jlp5.setIcon(mf.cardMach(cards1[i]));
@@ -541,7 +531,7 @@ class StuClient extends Thread {
 			}
 			for (int i = 0; i < scs.size(); i++) {
 				if (id.equals(scs.get(i))) { // 남쪽 내패
-					Thread.sleep(300);
+					Thread.sleep(100);
 					mf.jbp8.setIcon(mf.cardMach(cards2[i]));
 					// 버튼 클릭시 내패 까기 (구현 못할거 같음)
 //					if(open.equals("zndWKrWkr")) {
@@ -550,21 +540,21 @@ class StuClient extends Thread {
 //					}
 					// 족보 라벨
 				} else if (!(id.equals(scs.get(i))) && user1ID.equals(scs.get(i))) { // 동쪽
-					Thread.sleep(300);
+					Thread.sleep(100);
 					mf.jlp4.setIcon(mf.i101);
 					a++;
 					if (open.equals("dPfladl")) {
 						mf.jlp4.setIcon(mf.cardMach(cards2[i]));
 					}
 				} else if (!(id.equals(scs.get(i))) && user2ID.equals(scs.get(i))) { // 북쪽
-					Thread.sleep(300);
+					Thread.sleep(100);
 					mf.jlp2.setIcon(mf.i101);
 					b++;
 					if (open.equals("dPfladl")) {
 						mf.jlp2.setIcon(mf.cardMach(cards2[i]));
 					}
 				} else if (!(id.equals(scs.get(i))) && user3ID.equals(scs.get(i))) { // 서쪽
-					Thread.sleep(300);
+					Thread.sleep(100);
 					mf.jlp6.setIcon(mf.i101);
 					c++;
 					if (open.equals("dPfladl")) {
@@ -572,19 +562,19 @@ class StuClient extends Thread {
 					}
 				} else { // 서쪽
 					if (!(id.equals(scs.get(i))) && user4ID.equals(scs.get(i)) && a == 0) {// 동쪽이 비었을 때 user4
-						Thread.sleep(300);
+						Thread.sleep(100);
 						mf.jlp4.setIcon(mf.i101);
 						if (open.equals("dPfladl")) {
 							mf.jlp4.setIcon(mf.cardMach(cards2[i]));
 						}
 					} else if (!(id.equals(scs.get(i))) && user4ID.equals(scs.get(i)) && b == 0) {// 북쪽이 비었을 때 user4
-						Thread.sleep(300);
+						Thread.sleep(100);
 						mf.jlp2.setIcon(mf.i101);
 						if (open.equals("dPfladl")) {
 							mf.jlp2.setIcon(mf.cardMach(cards2[i]));
 						}
 					} else {
-						Thread.sleep(300);
+						Thread.sleep(100);
 						mf.jlp6.setIcon(mf.i101);
 						if (open.equals("dPfladl")) {
 							mf.jlp6.setIcon(mf.cardMach(cards2[i]));
@@ -785,7 +775,7 @@ class StuClient extends Thread {
 		ImageIcon i134 = new ImageIcon("./image/완성/신족보/삼팔광땡.png");
 
 		MainFrame() {
-			// TODO Auto-generated constructor stub
+		
 		}
 
 		ImageIcon cardMach(int cards) {
